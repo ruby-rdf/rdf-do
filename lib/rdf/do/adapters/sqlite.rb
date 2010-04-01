@@ -10,10 +10,10 @@ module RDF::DataObjects
       def self.migrate?(db, opts = {})
         prefix = opts[:prefix]
         db_exec(db, 'CREATE TABLE ? (`subject` varchar(255), `predicate` varchar(255), `object` varchar(255), `context` varchar(255), UNIQUE (`subject`, `predicate`, `object`, `context`))', "#{prefix}quads")
-        #db_exec('CREATE INDEX `quads_context_index` ON `quads` (`context`)')
-        #db_exec('CREATE INDEX `quads_object_index` ON `quads` (`object`)')
-        #db_exec('CREATE INDEX `quads_predicate_index` ON `quads` (`predicate`)')
-        #db_exec('CREATE INDEX `quads_subject_index` ON `quads` (`subject`)')
+        begin db_exec('CREATE INDEX `quads_context_index` ON `quads` (`context`)') rescue nil end
+        begin db_exec('CREATE INDEX `quads_object_index` ON `quads` (`object`)') rescue nil end
+        begin db_exec('CREATE INDEX `quads_predicate_index` ON `quads` (`predicate`)') rescue nil end
+        begin db_exec('CREATE INDEX `quads_subject_index` ON `quads` (`subject`)') rescue nil end
       end
 
       def self.count(db)
