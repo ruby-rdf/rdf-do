@@ -1,1 +1,0 @@
-../../../rdf-spec/lib/spec.rb
