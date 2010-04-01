@@ -9,26 +9,26 @@ module RDF
       def initialize(options = {})
         case options
           when String
-            @db    = ::DataObjects::Connection.new(options)
+            @db     = ::DataObjects::Connection.new(options)
           when Hash
-            @db    = ::DataObjects::Connection.new(options[:db])
-            schema   = options[:schema]
+            @db     = ::DataObjects::Connection.new(options[:db])
+            adapter = options[:adapter]
           when nil
             @db    = ::DataObjects::Connection.new('sqlite3://:memory:')
         end
-        schema ||= :simple
+        adapter ||= :sqlite
         begin
-          require 'rdf/do/schema/' + schema.to_s
+          require 'rdf/do/adapters/' + adapter.to_s
         rescue LoadError => e
-          warn "Unable to find schema '#{schema}'."
+          warn "Unable to find adapter '#{adapter}'."
           raise e
         end
-        @schema = RDF::DataObjects::Schema::const_get(schema.to_s.capitalize)
-        @schema.migrate? @db
+        @adapter = RDF::DataObjects::Adapters::const_get(adapter.to_s.capitalize)
+        @adapter.migrate? @db
       end
 
       def count
-        @schema.count @db        
+        @adapter.count @db        
       end
 
       def empty?
@@ -36,7 +36,7 @@ module RDF
       end
 
       def insert(*statements)
-        @schema.insert @db, *statements
+        @adapter.insert @db, *statements
       end
 
       def insert_statement(statement)
@@ -44,7 +44,7 @@ module RDF
       end
 
       def delete(*statements)
-        @schema.delete @db, *statements
+        @adapter.delete @db, *statements
       end
 
       def delete_statement(statement)
@@ -53,14 +53,14 @@ module RDF
 
       def each(&block)
         if block_given?
-          @schema.each @db, &block
+          @adapter.each @db, &block
         else
-          enum_statements(@schema, :each, @db)
+          enum_statements(@adapter, :each, @db)
         end
       end
 
       def enum_statements
-        ::Enumerable::Enumerator.new(@schema, :each, db)
+        ::Enumerable::Enumerator.new(@adapter, :each, db)
       end
 
     end

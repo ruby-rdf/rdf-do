@@ -1,12 +1,11 @@
-
 require 'rdf/ntriples'
 require 'enumerator'
 
 ## TODO: Indexes, escaping, efficient querying, efficient each_subject/predicate/object/etc.
 
 module RDF::DataObjects
-  module Schema
-    module Simple
+  module Adapters
+    module Sqlite
 
       def self.migrate?(db, opts = {})
         prefix = opts[:prefix]
