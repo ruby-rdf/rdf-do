@@ -9,7 +9,7 @@ RDF::DataObjects stores triples in a simple subject, predicate, object, context
 table.  Don't try to back a big website with it yet.  Nonetheless, it works.
 
 Example:
-    repository = RDF::DataObjects::Repository.new "sqlite3://test.db"
+    repository = RDF::DataObjects::Repository.new "sqlite3:test.db"
     repository.insert(statement)
     repository.count              #=> 1
     repository.delete(statement)
@@ -30,7 +30,7 @@ Manual downloads are available at <http://github.com/bhuga/rdf-do/downloads>
 ## Connecting:
   
     repo = RDF::DataObjects::Repository.new "postgres://localhost/database"
-    repo = RDF::DataObjects::Repository.new "sqlite3://./test.db"
+    repo = RDF::DataObjects::Repository.new "sqlite3:test.db"
     repo = RDF::DataObjects::Repository.new "postgres://localhost/database"
 
 

@@ -48,7 +48,7 @@ module RDF
         begin
           require 'rdf/do/adapters/' + adapter.to_s
         rescue LoadError => e
-          warn "Unable to find adapter '#{adapter}'."
+          #TODO: make this error clearer
           raise e
         end
         @adapter = RDF::DataObjects::Adapters::const_get(adapter.to_s.capitalize)
