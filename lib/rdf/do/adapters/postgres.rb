@@ -13,17 +13,7 @@ module RDF::DataObjects
         begin db_exec(db, 'CREATE INDEX `quads_object_index` ON `quads` (`object`)') rescue nil end
         begin db_exec(db, 'CREATE INDEX `quads_predicate_index` ON `quads` (`predicate`)') rescue nil end
         begin db_exec(db, 'CREATE INDEX `quads_subject_index` ON `quads` (`subject`)') rescue nil end
-        begin db_exec(db, 'CREATE LANGUAGE plpgsql') rescue nil end
-        db_exec(db, '
-        CREATE OR REPLACE function insert_quad(s varchar(255), p varchar(255), o varchar(255), c varchar(255)) returns void as $$
-          BEGIN
-            INSERT INTO quads (subject, predicate, object, context) values (s, p, o, c); 
-            EXCEPTION 
-              WHEN unique_violation THEN
-          END;
-        $$
-        language plpgsql;')
-
+        db_exec(db, 'CREATE OR REPLACE RULE "insert_ignore" AS ON INSERT TO quads WHERE EXISTS(SELECT true FROM quads WHERE subject = NEW.subject AND predicate = NEW.predicate AND object = NEW.object AND context = NEW.context) DO INSTEAD NOTHING;')
         
       end
 
@@ -34,8 +24,7 @@ module RDF::DataObjects
       end
 
       def self.insert(db, *statements)
-        query = "select insert_quad(?, ?, ?, ?)"
-        #query = "insert into quads (subject, predicate, object, context) VALUES (?, ?, ?, ?) ; exception when unique_violation then end;"
+        query = "insert into quads (subject, predicate, object, context) VALUES (?, ?, ?, ?)"
         statements.each do |s|
           db_exec(db,query,serialize(s. subject),serialize(s.predicate), serialize(s.object), serialize(s.context)) 
         end

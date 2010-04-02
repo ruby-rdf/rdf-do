@@ -28,6 +28,8 @@ describe RDF::DataObjects::Repository do
 
 
     end
+  else
+    warn "Skipping postgres tests; no DATABASE_URL found."
   end
 end
 
