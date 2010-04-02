@@ -20,6 +20,21 @@ task 'tracespec' do
   end
 end
 
+desc 'Run sqlite3 specs'
+task 'sqlite' do
+  Spec::Rake::SpecTask.new("sqlite") do |t|
+    t.spec_files = FileList["spec/sqlite3.spec"]
+    t.spec_opts = ["-bcfn"]
+  end
+end
+
+desc 'Run postgres specs'
+task 'pg' do
+  Spec::Rake::SpecTask.new("pg") do |t|
+    t.spec_files = FileList["spec/postgres.spec"]
+    t.spec_opts = ["-bcfn"]
+  end
+end
 
 desc "Open an irb session with everything loaded, including test fixtures"
 task :console do
