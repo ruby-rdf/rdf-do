@@ -43,7 +43,7 @@ more information.
 
 ### Miscellany
 
- * Author: Ben Lavender <blavender@gmail.com> <http://bhuga.net> <http://blog.datagraph.org>
+ * Author: Ben Lavender | <blavender@gmail.com> | <http://bhuga.net> | <http://blog.datagraph.org>
  * 'License':  RDF::DataObjects is free and unemcumbered software released into the public domain.  For more information, see the included UNLICENSE file.
 
 
