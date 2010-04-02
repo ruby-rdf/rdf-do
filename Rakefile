@@ -37,21 +37,6 @@ task 'pg' do
   end
 end
 
-desc "build yardocs"
-task 'yard' do 
-  YARD::Rake::YardocTask.new('yard') do |t|
-    t.files = ['lib/**/*.rb']
-    t.options = [
-      '--output-dir','doc/yard',
-      '--protected',
-      '--no-private',
-      '--hide-void-return',
-      '--markup','markdown',
-      '--readme','README.md'
-    ]
-  end
-end
-
 
 desc "Open an irb session with everything loaded, including test fixtures"
 task :console do

@@ -9,6 +9,7 @@ RDF::DataObjects stores triples in a simple subject, predicate, object, context
 table.  Don't try to back a big website with it yet.  Nonetheless, it works.
 
 Example:
+
     repository = RDF::DataObjects::Repository.new "sqlite3:test.db"
     repository.insert(statement)
     repository.count              #=> 1
