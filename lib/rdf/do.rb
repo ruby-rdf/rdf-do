@@ -35,21 +35,20 @@ module RDF
       # @param [Any] options
       # @return [RDF::DataObjects::Repository]
       def initialize(options = {})
-        case options
-          when String
-            @db     = ::DataObjects::Connection.new(options)
-          when Hash
-            @db     = ::DataObjects::Connection.new(options[:db])
-            adapter = options[:adapter]
-          when nil
-            @db    = ::DataObjects::Connection.new('sqlite3://:memory:')
-        end
-        adapter = @db.instance_variable_get("@uri").scheme
         begin
+          case options
+            when String
+              @db     = ::DataObjects::Connection.new(options)
+            when Hash
+              @db     = ::DataObjects::Connection.new(options[:db])
+              adapter = options[:adapter]
+            when nil
+              @db    = ::DataObjects::Connection.new('sqlite3://:memory:')
+          end
+          adapter = @db.instance_variable_get("@uri").scheme
           require 'rdf/do/adapters/' + adapter.to_s
-        rescue LoadError => e
-          #TODO: make this error clearer
-          raise e
+        rescue Exception => e
+          raise LoadError, "Could not load a DataObjects adapter for #{options}.  You may need to add a 'require do_adapter', or you may be trying to use an unsupported adapter (Currently supporting postgres, sqlite3).  The error message was: #{e.message}"
         end
         @adapter = RDF::DataObjects::Adapters::const_get(adapter.to_s.capitalize)
         @adapter.migrate? self
