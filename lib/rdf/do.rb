@@ -1,4 +1,6 @@
 require 'data_objects'
+require 'rdf/ntriples'
+require 'enumerator'
 
 module RDF
   module DataObjects
@@ -69,7 +71,6 @@ module RDF
           end
         else
           ::Enumerable::Enumerator.new(self,:each)
-          #enum_statements(@adapter, :each, @adapter)
         end
       end
 
@@ -89,12 +90,58 @@ module RDF
         @db.create_command(sql).execute_reader(*args)
       end
 
-      #def each_subject(&block)
-      #  if block_given?
-      #  else
-      #    self.enum_subjects
-      #  end
-      #end
+      def each_or_enumerator(method, &block)
+        if block_given?
+          self.send(method, &block)
+        else
+          ::Enumerable::Enumerator.new(self,:each_or_enumerator)
+        end
+      end
+
+      def each_subject(&block)
+        each_or_enumerator(:subject_block, &block)
+      end
+
+      def subject_block(&block)
+        reader = result(@adapter.each_subject_sql)
+        while reader.next!
+          block.call(unserialize(reader.values[0]))
+        end
+      end
+
+      def each_predicate(&block)
+        each_or_enumerator(:predicate_block, &block)
+      end
+
+      def predicate_block(&block)
+        reader = result(@adapter.each_predicate_sql)
+        while reader.next!
+          block.call(unserialize(reader.values[0]))
+        end
+      end
+
+      def each_object(&block)
+        each_or_enumerator(:object_block, &block)
+      end
+
+      def object_block(&block)
+        reader = result(@adapter.each_object_sql)
+        while reader.next!
+          block.call(unserialize(reader.values[0]))
+        end
+      end
+
+      def each_context(&block)
+        each_or_enumerator(:context_block, &block)
+      end
+
+      def context_block(&block)
+        reader = result(@adapter.each_context_sql)
+        while reader.next!
+          context = unserialize(reader.values[0])
+          block.call(context) unless context.nil?
+        end
+      end
 
       def insert(*statements)
         query = @adapter.insert_sql
@@ -110,9 +157,33 @@ module RDF
         end
       end
 
-      #def query(query_stuff)
-        # only deal with hash here
-      #end
+      def query(pattern, &block)
+        case pattern
+          when RDF::Statement
+            query(pattern.to_hash)
+          when Array
+            query(RDF::Statement.new(*pattern))
+          when Hash
+            statements = []
+            reader = @adapter.query(self,pattern)
+            while reader.next!
+              statements << RDF::Statement.new(
+                      :subject   => unserialize(reader.values[0]),
+                      :predicate => unserialize(reader.values[1]),
+                      :object    => unserialize(reader.values[2]),
+                      :context   => unserialize(reader.values[3]))
+            end
+            case block_given?
+              when true
+                statements.each(&block)
+              else
+                statements.extend(RDF::Enumerable, RDF::Queryable)
+            end
+          else
+            super(pattern) 
+        end
+
+      end
 
       def count
         result = result(@adapter.count_sql)

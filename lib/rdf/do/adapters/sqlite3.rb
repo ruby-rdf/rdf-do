@@ -27,12 +27,39 @@ module RDF::DataObjects
         'DELETE FROM `quads` where (subject = ? AND predicate = ? AND object = ? AND context = ?)'
       end
 
-      def self.query
-        # only deal with hash here
-      end
-
       def self.each_sql
         'select * from quads'
+      end
+
+      def self.each_subject_sql
+        'select subject from quads'
+      end
+
+      def self.each_predicate_sql
+        'select predicate from quads'
+      end
+
+      def self.each_object_sql
+        'select object from quads'
+      end
+
+      def self.each_context_sql
+        'select context from quads'
+      end
+
+      def self.query(repository, hash = {})
+        return repository.result(each_sql) if hash.empty?
+        conditions = []
+        params = []
+        [:subject, :predicate, :object, :context].each do |resource|
+          unless hash[resource].nil?
+            conditions << "#{resource.to_s} = ?"
+            params     << repository.serialize(hash[resource])
+          end
+        end
+        where = conditions.empty? ? "" : "WHERE "
+        where << conditions.join(' AND ')
+        repository.result('select * from quads ' + where, *params)
       end
 
     end
