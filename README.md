@@ -31,7 +31,6 @@ Manual downloads are available at <http://github.com/bhuga/rdf-do/downloads>
   
     repo = RDF::DataObjects::Repository.new "postgres://localhost/database"
     repo = RDF::DataObjects::Repository.new "sqlite3:test.db"
-    repo = RDF::DataObjects::Repository.new "postgres://localhost/database"
 
 
 ## Using:
