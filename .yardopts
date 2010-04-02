@@ -1,4 +1,4 @@
---title 'RDF::DataObjects: RDF.rb plugin providing a DatAObjects storage adapter.'
+--title 'RDF::DataObjects: RDF.rb plugin providing a DataObjects storage adapter.'
 --output-dir doc/yard
 --protected
 --no-private
