@@ -1,11 +1,4 @@
-$:.unshift(File.join(File.dirname(__FILE__),'..','lib'))
-$:.unshift(File.join(File.dirname(__FILE__),'..','..','rdf-spec','lib'))
-$:.unshift(File.join(File.dirname(__FILE__),'..','..','rdf','lib'))
-
-require 'rdf'
-require 'rdf/spec'
-require 'rdf/spec/repository'
-require 'rdf/do'
+require File.join(File.dirname(__FILE__), 'spec_helper.rb')
 require 'do_postgres'
 
 describe RDF::DataObjects::Repository do
@@ -13,13 +6,12 @@ describe RDF::DataObjects::Repository do
     context "The Postgres adapter" do
     before :each do
       @repository = RDF::DataObjects::Repository.new ENV['DATABASE_URL']
+      @repository.clear
     end
 
     after :each do
+      @repository.close
       DataObjects::Pooling.pools.each {|pool| pool.dispose}
-      #DataObjects::Postgres::Connection.__pools.clear
-      @repository.clear
-      #@repository.dispose
     end
 
     # @see lib/rdf/spec/repository.rb in RDF-spec

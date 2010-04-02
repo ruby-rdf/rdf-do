@@ -31,6 +31,10 @@ module RDF
         @db.dispose
       end
 
+      def close
+        @db.close
+      end
+
       def count
         @adapter.count @db        
       end
