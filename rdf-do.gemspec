@@ -8,15 +8,15 @@ GEMSPEC = Gem::Specification.new do |gem|
   gem.name               = 'rdf-do'
   gem.homepage           = 'http://rdf.rubyforge.org/'
   gem.license            = 'Public Domain' if gem.respond_to?(:license=)
-  gem.description        = 'RDF.rb plugin for DataObjects-backed repositories'
-  gem.summary            = 'RDF.rb plugin for DataObjects-backed repositories'
+  gem.description        = 'RDF.rb plugin providing a DataObjects storage adapter.'
+  gem.summary            = 'RDF.rb plugin providing a DataObjects storage adapter.'
   gem.rubyforge_project  = 'rdf'
 
   gem.authors            = ['Ben Lavender']
   gem.email              = 'blavender@gmail.com'
 
   gem.platform           = Gem::Platform::RUBY
-  gem.files              = %w(README.md UNLICENSE VERSION) + Dir.glob('lib/**/*.rb')
+  gem.files              = %w(AUTHORS README UNLICENSE VERSION) + Dir.glob('lib/**/*.rb')
   gem.bindir             = %q(bin)
   gem.executables        = %w()
   gem.default_executable = gem.executables.first
@@ -27,9 +27,10 @@ GEMSPEC = Gem::Specification.new do |gem|
 
   gem.required_ruby_version      = '>= 1.8.2'
   gem.requirements               = []
-  gem.add_runtime_dependency     'rdf',      '>= 0.1.3'
-  gem.add_development_dependency 'rdf-spec', '>= 0.1.0'
-  gem.add_development_dependency 'rspec',    '>= 1.3.0'
-  gem.add_development_dependency 'yard' ,    '>= 0.5.3'
+  gem.add_runtime_dependency     'rdf',          '>= 0.1.3'
+  gem.add_runtime_dependency     'data_objects', '>= 0.10.1'
+  gem.add_development_dependency 'rdf-spec',     '>= 0.1.0'
+  gem.add_development_dependency 'rspec',        '>= 1.3.0'
+  gem.add_development_dependency 'yard' ,        '>= 0.5.3'
   gem.post_install_message       = nil
 end
