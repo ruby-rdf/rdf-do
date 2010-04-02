@@ -1,10 +1,10 @@
 require 'rdf/ntriples'
-require 'enumerator'
-
-## TODO: Indexes, escaping, efficient querying, efficient each_subject/predicate/object/etc.
 
 module RDF::DataObjects
   module Adapters
+
+    ## 
+    # Default SQL statements and methods for RDF::DataObjects::Repository::Adapters.
     module Defaults
 
       def count_sql
@@ -39,6 +39,14 @@ module RDF::DataObjects
         'select context from quads'
       end
 
+      ##
+      # Perform a query on an RDF::DataObjects::Repository based on a hash of components.
+      #
+      # This is meant to be called by RDF::DataObjects::Repository.
+      #
+      # @example
+      #     adapter.query(repository, :predicate => predicate)
+      # @return [DataObjects::Result]
       def query(repository, hash = {})
         return repository.result(each_sql) if hash.empty?
         conditions = []

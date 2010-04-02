@@ -6,6 +6,11 @@ module RDF::DataObjects
 
       self.extend Defaults
 
+      ##
+      # Indempotently migrate this database
+      #
+      # @param [RDF::DataObjects::Repository]
+      # @return [void]
       def self.migrate?(do_repository, opts = {})
         do_repository.exec('CREATE TABLE IF NOT EXISTS quads (`subject` varchar(255), `predicate` varchar(255), `object` varchar(255), `context` varchar(255), UNIQUE (`subject`, `predicate`, `object`, `context`))')
         begin do_repository.exec('CREATE INDEX `quads_context_index` ON `quads` (`context`)') rescue nil end
