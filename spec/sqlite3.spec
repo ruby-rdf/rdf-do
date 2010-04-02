@@ -8,8 +8,8 @@ describe RDF::DataObjects::Repository do
     end
 
     after :each do
-      @repository.clear
       DataObjects::Sqlite3::Connection.__pools.clear
+      @repository.clear
     end
 
     # @see lib/rdf/spec/repository.rb in RDF-spec

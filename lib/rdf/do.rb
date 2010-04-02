@@ -23,20 +23,22 @@ module RDF
           warn "Unable to find adapter '#{adapter}'."
           raise e
         end
-        @adapter = RDF::DataObjects::Adapters::const_get(adapter.to_s.capitalize)
-        @adapter.migrate? @db
+        @adapter = RDF::DataObjects::Adapters::const_get(adapter.to_s.capitalize).new(@db)
+        @adapter.migrate?
       end
 
       def dispose
+        close
         @db.dispose
       end
 
       def close
         @db.close
+        @adapter = nil
       end
 
       def count
-        @adapter.count @db        
+        @adapter.count
       end
 
       def empty?
@@ -44,7 +46,7 @@ module RDF
       end
 
       def insert(*statements)
-        @adapter.insert @db, *statements
+        @adapter.insert *statements
       end
 
       def insert_statement(statement)
@@ -52,7 +54,7 @@ module RDF
       end
 
       def delete(*statements)
-        @adapter.delete @db, *statements
+        @adapter.delete *statements
       end
 
       def delete_statement(statement)
@@ -61,14 +63,14 @@ module RDF
 
       def each(&block)
         if block_given?
-          @adapter.each @db, &block
+          @adapter.each &block
         else
-          enum_statements(@adapter, :each, @db)
+          enum_statements(@adapter, :each, @adapter)
         end
       end
 
       def enum_statements
-        ::Enumerable::Enumerator.new(@adapter, :each, db)
+        ::Enumerable::Enumerator.new(@adapter, :each)
       end
 
     end
