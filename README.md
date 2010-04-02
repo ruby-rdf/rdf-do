@@ -3,8 +3,8 @@
 DataObjects-backed RDF.rb repository, aiming for a simple use case and
 currently targeting SQLite and Postgres.
 
- * http://github.com/bhuga/rdf-do
- * http://lists.w3.org/Archives/Public/public-rdf-ruby
+ * <http://github.com/bhuga/rdf-do>
+ * <http://lists.w3.org/Archives/Public/public-rdf-ruby>
 
 This was written for a tutorial, and is thus a pretty naive implementation so far.
 RDF::DataObjects stores triples in a simple subject, predicate, object, context
