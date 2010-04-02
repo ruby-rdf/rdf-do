@@ -6,25 +6,24 @@ require 'rdf'
 require 'rdf/spec'
 require 'rdf/spec/repository'
 require 'rdf/do'
-require 'do_sqlite3'
+require 'do_postgres'
 
 describe RDF::DataObjects::Repository do
-  context "The SQLite adapter" do
+  if ENV['DATABASE_URL']
+    context "The Postgres adapter" do
     before :each do
-      @repository = RDF::DataObjects::Repository.new "sqlite3://:memory:"
+      @repository = RDF::DataObjects::Repository.new ENV['DATABASE_URL']
     end
 
     after :each do
+      DataObjects::Pooling.pools.each {|pool| pool.dispose}
+      #DataObjects::Postgres::Connection.__pools.clear
       @repository.clear
-      DataObjects::Sqlite3::Connection.__pools.clear
+      #@repository.dispose
     end
 
     # @see lib/rdf/spec/repository.rb in RDF-spec
     it_should_behave_like RDF_Repository
-  end
-
-  if ENV['DATABASE_URL']
-    context "The Postgres adapter" do
       
 
 

@@ -5,7 +5,7 @@ require 'enumerator'
 
 module RDF::DataObjects
   module Adapters
-    module Sqlite
+    module Sqlite3
 
       def self.migrate?(db, opts = {})
         prefix = opts[:prefix]

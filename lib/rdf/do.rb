@@ -16,7 +16,7 @@ module RDF
           when nil
             @db    = ::DataObjects::Connection.new('sqlite3://:memory:')
         end
-        adapter ||= :sqlite
+        adapter = @db.instance_variable_get("@uri").scheme
         begin
           require 'rdf/do/adapters/' + adapter.to_s
         rescue LoadError => e
@@ -25,6 +25,10 @@ module RDF
         end
         @adapter = RDF::DataObjects::Adapters::const_get(adapter.to_s.capitalize)
         @adapter.migrate? @db
+      end
+
+      def dispose
+        @db.dispose
       end
 
       def count
