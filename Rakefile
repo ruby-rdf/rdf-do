@@ -40,7 +40,7 @@ end
 
 desc "Open an irb session with everything loaded, including test fixtures"
 task :console do
-  sh "irb -rubygems -I lib -r rdf-do"
+  sh "irb -rubygems -I lib -r rdf/do"
 end
 
 task :default => [:spec]
