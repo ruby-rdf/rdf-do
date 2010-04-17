@@ -1,2 +1,4 @@
+0.3.0: Using new RDF.rb insert_statements, implemented multiple insert for
+Postgres.  Almost twice as fast on heroku.
 0.2.1: Updates to gemspec
 0.2.0: Initial release
