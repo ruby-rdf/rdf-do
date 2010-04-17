@@ -165,51 +165,21 @@ module RDF
       end
 
       ##
-      # Helper method to handle the block/enumerator handling for each/each_subject/each_object, etc.
-      #
-      # Will call the given method with the given block is one is given.
-      # Will return an enumerator with the given method called as a block if no block is given.
-      #
-      # @param [Symbol] method
-      # @param [Proc] &block
-      # @return [Enumerable::Enumerator, void]
-      # @nodoc
-      # @private
-      def each_or_enumerator(method, &block)
-        if block_given?
-          self.send(method, &block)
-        else
-          ::Enumerable::Enumerator.new(self,:each_or_enumerator)
-        end
-      end
-
-      ##
-      # Implementation of #each
-      #
-      # @nodoc
-      # @private
-      # @return [void]
-      # @see RDF::Enumerable#each
-      # @see RDF::DataObjects::Repository#each_or_enumerator
-      def each_block(&block)
-        reader = result(@adapter.each_sql)
-        while reader.next!
-          block.call(RDF::Statement.new(
-                      :subject   => unserialize(reader.values[0]),
-                      :predicate => unserialize(reader.values[1]),
-                      :object    => unserialize(reader.values[2]),
-                      :context   => unserialize(reader.values[3])))
-        end
-      end
-
-      ##
       # Iterate over all RDF::Statements in this repository.
       #
       # @see RDF::Enumerable#each
       # @param [Proc] &block
       # @return [Enumerable::Enumerator, void]
       def each(&block)
-        each_or_enumerator(:each_block, &block)
+        return ::Enumerable::Enumerator.new(self,:each) unless block_given?
+        reader = result(@adapter.each_sql)
+        while reader.next!
+          block.call(RDF::Statement.new(
+                     :subject   => unserialize(reader.values[0]),
+                     :predicate => unserialize(reader.values[1]),
+                     :object    => unserialize(reader.values[2]),
+                     :context   => unserialize(reader.values[3])))
+        end
       end
 
       ##
@@ -218,19 +188,8 @@ module RDF
       # @see RDF::Enumerable#each_subject
       # @param [Proc] &block
       # @return [Enumerable::Enumerator, void]
-      def each_subject(&block)
-        each_or_enumerator(:subject_block, &block)
-      end
-
-      ##
-      # Implementation of #each_subject
-      #
-      # @nodoc
-      # @private
-      # @return [void]
-      # @see RDF::Enumerable#each_subject
-      # @see RDF::DataObjects::Repository#each_or_enumerator
-      def subject_block(&block)
+      def each_subject(&block) 
+        return ::Enumerable::Enumerator.new(self,:each_subject) unless block_given?
         reader = result(@adapter.each_subject_sql)
         while reader.next!
           block.call(unserialize(reader.values[0]))
@@ -244,18 +203,7 @@ module RDF
       # @param [Proc] &block
       # @return [Enumerable::Enumerator, void]
       def each_predicate(&block)
-        each_or_enumerator(:predicate_block, &block)
-      end
-
-      ##
-      # Implementation of #each_predicate
-      #
-      # @nodoc
-      # @private
-      # @return [void]
-      # @see RDF::Enumerable#each_predicate
-      # @see RDF::DataObjects::Repository#each_or_enumerator
-      def predicate_block(&block)
+        return ::Enumerable::Enumerator.new(self,:each_predicate) unless block_given?
         reader = result(@adapter.each_predicate_sql)
         while reader.next!
           block.call(unserialize(reader.values[0]))
@@ -269,18 +217,7 @@ module RDF
       # @param [Proc] &block
       # @return [Enumerable::Enumerator, void]
       def each_object(&block)
-        each_or_enumerator(:object_block, &block)
-      end
-
-      ##
-      # Implementation of #each_object
-      #
-      # @nodoc
-      # @private
-      # @return [void]
-      # @see RDF::Enumerable#each_object
-      # @see RDF::DataObjects::Repository#each_or_enumerator
-      def object_block(&block)
+        return ::Enumerable::Enumerator.new(self,:each_object) unless block_given?
         reader = result(@adapter.each_object_sql)
         while reader.next!
           block.call(unserialize(reader.values[0]))
@@ -294,18 +231,7 @@ module RDF
       # @param [Proc] &block
       # @return [Enumerable::Enumerator, void]
       def each_context(&block)
-        each_or_enumerator(:context_block, &block)
-      end
-
-      ##
-      # Implementation of #each_context
-      #
-      # @nodoc
-      # @private
-      # @return [void]
-      # @see RDF::Enumerable#each_context
-      # @see RDF::DataObjects::Repository#each_or_enumerator
-      def context_block(&block)
+        return ::Enumerable::Enumerator.new(self,:each_context) unless block_given?
         reader = result(@adapter.each_context_sql)
         while reader.next!
           context = unserialize(reader.values[0])
