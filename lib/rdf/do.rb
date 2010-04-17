@@ -88,7 +88,7 @@ module RDF
       # @param [RDF::Statement]
       # @return [void]
       def insert_statement(statement)
-        insert *[statement]
+        insert_statements [statement]
       end
 
       ##
@@ -98,20 +98,44 @@ module RDF
       # @param [RDF::Statement]
       # @return [void]
       def delete_statement(statement)
-        delete *[statement]
+        delete_statements [statement]
       end
 
-      def insert(*statements)
-        query = @adapter.insert_sql
-        statements.each do |s|
-          exec(query,serialize(s. subject),serialize(s.predicate), serialize(s.object), serialize(s.context)) 
+      ##
+      # Insert multiple statements into this repository
+      #
+      # @see RDF::Mutable#insert_statements
+      # @param  [Array]
+      # @return [void]
+      def insert_statements(statements)
+        if @adapter.respond_to?(:multiple_insert_sql)
+          each = statements.respond_to?(:each_statement) ? :each_statement : :each
+          args = []
+          count = 0
+          statements.__send__(each) do |s|
+            count += 1
+            args += [serialize(s. subject),serialize(s.predicate), serialize(s.object), serialize(s.context)]
+          end
+          query = @adapter.multiple_insert_sql(count)
+          exec(query,*(args.flatten))
+        else
+          query = @adapter.insert_sql
+          statements.each do |s|
+            exec(query, serialize(s. subject),serialize(s.predicate), serialize(s.object), serialize(s.context)) 
+          end
         end
       end
 
-      def delete(*statements)
+      ##
+      # Remove multiple statements from this repository
+      #
+      # @see RDF::Mutable#delete_statements
+      # @param  [Array]
+      # @return [void]
+      def delete_statements(statements)
         query = @adapter.delete_sql
         statements.each do |s|
-          exec(query,serialize(s. subject),serialize(s.predicate), serialize(s.object), serialize(s.context)) 
+          exec(query, serialize(s. subject), serialize(s.predicate), serialize(s.object), serialize(s.context)) 
         end
       end
 
