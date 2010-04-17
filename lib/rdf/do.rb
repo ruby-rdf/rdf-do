@@ -1,6 +1,7 @@
 require 'data_objects'
 require 'rdf/ntriples'
 require 'enumerator'
+require 'rdf/do/version'
 
 module RDF
 
@@ -15,7 +16,6 @@ module RDF
   # @see RDF::DataObjects::Adapters
   # @see RDF::Repository
   module DataObjects
-
     ##
     # RDF::DataObjects::Repository is an RDF::Repository is backed by a
     # DataObjects connection.
