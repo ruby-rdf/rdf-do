@@ -24,19 +24,19 @@ module RDF::DataObjects
       end
 
       def each_subject_sql
-        'select subject from quads'
+        'select distinct subject from quads'
       end
 
       def each_predicate_sql
-        'select predicate from quads'
+        'select distinct predicate from quads'
       end
 
       def each_object_sql
-        'select object from quads'
+        'select distinct object from quads'
       end
 
       def each_context_sql
-        'select context from quads'
+        'select distinct context from quads'
       end
 
       ##
