@@ -31,6 +31,15 @@ module RDF::DataObjects
         'insert into quads (subject, predicate, object, context) VALUES (?, ?, ?, ?)'
       end
 
+      # SQL prepared statement for multiple insertion
+      #
+      # @param  [Integer] The number of statements to be inserted
+      # @return [String]
+      def self.multiple_insert_sql(count)
+        sql = 'insert into quads (subject, predicate, object, context) VALUES '
+        sql + (1..count).map { "(?, ?, ?, ?)" }.join(',')
+      end
+
       # SQL prepared statement for deletions
       #
       # @return [String]
