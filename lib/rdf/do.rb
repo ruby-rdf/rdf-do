@@ -277,9 +277,9 @@ module RDF
       def query(pattern, &block)
         case pattern
           when RDF::Statement
-            query(pattern.to_hash)
+            query(pattern.to_hash, &block)
           when Array
-            query(RDF::Statement.new(*pattern))
+            query(RDF::Statement.new(*pattern), &block)
           when Hash
             statements = []
             reader = @adapter.query(self,pattern)
