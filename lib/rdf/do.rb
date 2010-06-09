@@ -195,7 +195,7 @@ module RDF
       # @param [Proc] &block
       # @return [Enumerable::Enumerator, void]
       def each(&block)
-        return ::Enumerable::Enumerator.new(self,:each) unless block_given?
+        return RDF::Enumerator.new(self,:each) unless block_given?
         reader = result(@adapter.each_sql)
         while reader.next!
           block.call(RDF::Statement.new(
@@ -213,7 +213,7 @@ module RDF
       # @param [Proc] &block
       # @return [Enumerable::Enumerator, void]
       def each_subject(&block) 
-        return ::Enumerable::Enumerator.new(self,:each_subject) unless block_given?
+        return RDF::Enumerator.new(self,:each_subject) unless block_given?
         reader = result(@adapter.each_subject_sql)
         while reader.next!
           block.call(unserialize(reader.values[0]))
@@ -227,7 +227,7 @@ module RDF
       # @param [Proc] &block
       # @return [Enumerable::Enumerator, void]
       def each_predicate(&block)
-        return ::Enumerable::Enumerator.new(self,:each_predicate) unless block_given?
+        return RDF::Enumerator.new(self,:each_predicate) unless block_given?
         reader = result(@adapter.each_predicate_sql)
         while reader.next!
           block.call(unserialize(reader.values[0]))
@@ -241,7 +241,7 @@ module RDF
       # @param [Proc] &block
       # @return [Enumerable::Enumerator, void]
       def each_object(&block)
-        return ::Enumerable::Enumerator.new(self,:each_object) unless block_given?
+        return RDF::Enumerator.new(self,:each_object) unless block_given?
         reader = result(@adapter.each_object_sql)
         while reader.next!
           block.call(unserialize(reader.values[0]))
@@ -255,7 +255,7 @@ module RDF
       # @param [Proc] &block
       # @return [Enumerable::Enumerator, void]
       def each_context(&block)
-        return ::Enumerable::Enumerator.new(self,:each_context) unless block_given?
+        return RDF::Enumerator.new(self,:each_context) unless block_given?
         reader = result(@adapter.each_context_sql)
         while reader.next!
           context = unserialize(reader.values[0])
