@@ -32,6 +32,8 @@ The greatly preferred installation method is via RubyGems:
 
 Manual downloads are available at <http://github.com/bhuga/rdf-do/downloads>
 
+Ruby 1.8.6 is not supported, but the tests pass with the backports gem.  Godspeed.
+
 ## Connecting:
     require 'do_postgres'
     require 'do_sqlite3'
