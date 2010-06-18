@@ -1,3 +1,5 @@
+0.3.2: RDF.rb 0.2.0 compatibility updates
+0.3.1: Deprecate 1.8.6 and use RDF::Enumerable
 0.3.0: Using new RDF.rb insert_statements, implemented multiple insert for
 Postgres.  Almost twice as fast on heroku.
 0.2.1: Updates to gemspec
