@@ -195,7 +195,7 @@ module RDF
       # @param [Proc] &block
       # @return [Enumerable::Enumerator, void]
       def each(&block)
-        return RDF::Enumerator.new(self,:each) unless block_given?
+        return enum_for(:each) unless block_given?
         reader = result(@adapter.each_sql)
         while reader.next!
           block.call(RDF::Statement.new(
@@ -213,7 +213,7 @@ module RDF
       # @param [Proc] &block
       # @return [Enumerable::Enumerator, void]
       def each_subject(&block) 
-        return RDF::Enumerator.new(self,:each_subject) unless block_given?
+        return enum_for(:each_subject) unless block_given?
         reader = result(@adapter.each_subject_sql)
         while reader.next!
           block.call(unserialize(reader.values[0]))
@@ -227,7 +227,7 @@ module RDF
       # @param [Proc] &block
       # @return [Enumerable::Enumerator, void]
       def each_predicate(&block)
-        return RDF::Enumerator.new(self,:each_predicate) unless block_given?
+        return enum_for(:each_predicate) unless block_given?
         reader = result(@adapter.each_predicate_sql)
         while reader.next!
           block.call(unserialize(reader.values[0]))
@@ -241,7 +241,7 @@ module RDF
       # @param [Proc] &block
       # @return [Enumerable::Enumerator, void]
       def each_object(&block)
-        return RDF::Enumerator.new(self,:each_object) unless block_given?
+        return enum_for(:each_object) unless block_given?
         reader = result(@adapter.each_object_sql)
         while reader.next!
           block.call(unserialize(reader.values[0]))
@@ -255,7 +255,7 @@ module RDF
       # @param [Proc] &block
       # @return [Enumerable::Enumerator, void]
       def each_context(&block)
-        return RDF::Enumerator.new(self,:each_context) unless block_given?
+        return enum_for(:each_context) unless block_given?
         reader = result(@adapter.each_context_sql)
         while reader.next!
           context = unserialize(reader.values[0])
@@ -274,32 +274,15 @@ module RDF
       # @param [RDF::Statement, Hash, Array] pattern
       # @return [RDF::Enumerable, void]  
       # @see RDF::Queryable#query
-      def query(pattern, &block)
-        case pattern
-          when RDF::Statement
-            query(pattern.to_hash, &block)
-          when Array
-            query(RDF::Statement.new(*pattern), &block)
-          when Hash
-            statements = []
-            reader = @adapter.query(self,pattern)
-            while reader.next!
-              statements << RDF::Statement.new(
-                      :subject   => unserialize(reader.values[0]),
-                      :predicate => unserialize(reader.values[1]),
-                      :object    => unserialize(reader.values[2]),
-                      :context   => unserialize(reader.values[3]))
-            end
-            case block_given?
-              when true
-                statements.each(&block)
-              else
-                statements.extend(RDF::Enumerable, RDF::Queryable)
-            end
-          else
-            super(pattern) 
+      def query_pattern(pattern, &block)
+        reader = @adapter.query(self,pattern.to_hash)
+        while reader.next!
+          yield RDF::Statement.new(
+              :subject   => unserialize(reader.values[0]),
+              :predicate => unserialize(reader.values[1]),
+              :object    => unserialize(reader.values[2]),
+              :context   => unserialize(reader.values[3]))
         end
-
       end
 
       ##
