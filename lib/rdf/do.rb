@@ -1,4 +1,5 @@
 require 'data_objects'
+require 'rdf'
 require 'rdf/ntriples'
 require 'enumerator'
 require 'rdf/do/version'
@@ -54,6 +55,14 @@ module RDF
         @adapter.migrate? self
       end
 
+      # @see RDF::Mutable#insert_statement
+      def supports?(feature)
+        case feature.to_sym
+          when :context then true
+          else false
+        end
+      end
+      
       ##
       # Close and dispose of this connection.
       #
@@ -114,14 +123,14 @@ module RDF
           count = 0
           statements.__send__(each) do |s|
             count += 1
-            args += [serialize(s. subject),serialize(s.predicate), serialize(s.object), serialize(s.context)]
+            args += [serialize(s.subject),serialize(s.predicate), serialize(s.object), serialize(s.context)]
           end
           query = @adapter.multiple_insert_sql(count)
           exec(query,*(args.flatten))
         else
           query = @adapter.insert_sql
           statements.each do |s|
-            exec(query, serialize(s. subject),serialize(s.predicate), serialize(s.object), serialize(s.context)) 
+            exec(query, serialize(s.subject),serialize(s.predicate), serialize(s.object), serialize(s.context)) 
           end
         end
       end
@@ -135,7 +144,7 @@ module RDF
       def delete_statements(statements)
         query = @adapter.delete_sql
         statements.each do |s|
-          exec(query, serialize(s. subject), serialize(s.predicate), serialize(s.object), serialize(s.context)) 
+          exec(query, serialize(s.subject), serialize(s.predicate), serialize(s.object), serialize(s.context)) 
         end
       end
 
@@ -159,7 +168,18 @@ module RDF
       # @param [String]
       # @return [RDF::Value]
       def unserialize(value)
-        value == 'nil' ? nil : RDF::NTriples::Reader.unserialize(value)
+        result = value == 'nil' ? nil : RDF::NTriples::Reader.unserialize(value)
+        case result
+        when RDF::URI
+          RDF::URI.intern(result)
+        when RDF::Node
+          # This should probably be done in RDF::Node.intern
+          id = result.id.to_s
+          @nodes ||= {}
+          @nodes[id] ||= RDF::Node.new(id)
+        else
+          result
+        end
       end
      
       ##
@@ -185,6 +205,7 @@ module RDF
       # @param [String] sql
       # @param [*RDF::Value] args
       def result(sql, *args)
+        @nodes = {} # reset cache. FIXME this should probably be in Node.intern
         @db.create_command(sql).execute_reader(*args)
       end
 
@@ -263,7 +284,8 @@ module RDF
         end
       end
 
-      ## Implementation of RDF::Queryable#query
+      ##
+      # Implementation of RDF::Queryable#query_pattern
       #  
       # This implementation will do well for statements and hashes, and not so
       # well for RDF::Query objects.
@@ -271,10 +293,11 @@ module RDF
       # Accepts a query pattern argument as in RDF::Queryable.  See
       # {RDF::Queryable} for more information.
       #
-      # @param [RDF::Statement, Hash, Array] pattern
-      # @return [RDF::Enumerable, void]  
-      # @see RDF::Queryable#query
+      # @param [RDF::Query::Pattern] pattern
+      # @see RDF::Queryable#query_pattern
+      # @see RDF::Query::Pattern
       def query_pattern(pattern, &block)
+        @nodes = {} # reset cache. FIXME this should probably be in Node.intern
         reader = @adapter.query(self,pattern.to_hash)
         while reader.next!
           yield RDF::Statement.new(
