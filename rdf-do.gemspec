@@ -6,14 +6,14 @@ Gem::Specification.new do |gem|
   gem.date               = File.mtime('VERSION').strftime('%Y-%m-%d')
 
   gem.name               = 'rdf-do'
-  gem.homepage           = 'http://rdf.rubyforge.org/'
+  gem.homepage           = 'http://rubygems.org/gems/rdf-do'
   gem.license            = 'Public Domain' if gem.respond_to?(:license=)
   gem.description        = 'RDF.rb plugin providing a DataObjects storage adapter.'
   gem.summary            = 'RDF.rb plugin providing a DataObjects storage adapter.'
   gem.rubyforge_project  = 'rdf'
 
   gem.authors            = ['Ben Lavender']
-  gem.email              = 'blavender@gmail.com'
+  gem.email              = 'public-rdf-ruby@w3.org'
 
   gem.platform           = Gem::Platform::RUBY
   gem.files              = %w(AUTHORS README UNLICENSE VERSION) + Dir.glob('lib/**/*.rb')
