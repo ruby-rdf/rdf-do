@@ -13,7 +13,7 @@ module RDF::DataObjects
       ##
       # Indempotently migrate this database.
       #
-      # @param [RDF::DataObjects::Repository]
+      # @param [RDF::DataObjects::Repository] do_repository
       # @return [void]
       def self.migrate?(do_repository, opts = {})
         begin do_repository.exec('CREATE TABLE quads (subject varchar(255), predicate varchar(255), object varchar(255), context varchar(255), UNIQUE (subject, predicate, object, context))') rescue nil end
@@ -33,7 +33,7 @@ module RDF::DataObjects
 
       # SQL prepared statement for multiple insertion
       #
-      # @param  [Integer] The number of statements to be inserted
+      # @param  [Integer] count The number of statements to be inserted
       # @return [String]
       def self.multiple_insert_sql(count)
         sql = 'insert into quads (subject, predicate, object, context) VALUES '

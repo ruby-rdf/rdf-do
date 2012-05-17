@@ -9,7 +9,7 @@ module RDF::DataObjects
       ##
       # Indempotently migrate this database
       #
-      # @param [RDF::DataObjects::Repository]
+      # @param [RDF::DataObjects::Repository] do_repository
       # @return [void]
       def self.migrate?(do_repository, opts = {})
         do_repository.exec('CREATE TABLE IF NOT EXISTS quads (`subject` varchar(255), `predicate` varchar(255), `object` varchar(255), `context` varchar(255), UNIQUE (`subject`, `predicate`, `object`, `context`))')

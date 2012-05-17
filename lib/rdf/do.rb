@@ -32,7 +32,8 @@ module RDF
       #
       # @example
       #     RDF::DataObjects::Repository.new  # => new Repository based on sqlite3://:memory:
-      #     RDF::DataObjects::Repository.new 'postgres://localhost/database'  # => New repository based on postgres adapter
+      #     RDF::DataObjects::Repository.new 'postgres://localhost/database'
+      #       => New repository based on postgres adapter
       # @param [Any] options
       # @return [RDF::DataObjects::Repository]
       def initialize(options = {})
@@ -94,7 +95,7 @@ module RDF
       # Insert a single statement into this repository.
       #
       # @see RDF::Mutable#insert_statement
-      # @param [RDF::Statement]
+      # @param [RDF::Statement] statement
       # @return [void]
       def insert_statement(statement)
         insert_statements [statement]
@@ -104,7 +105,7 @@ module RDF
       # Delete a single statement from this repository.
       #
       # @see RDF::Mutable#delete_statement
-      # @param [RDF::Statement]
+      # @param [RDF::Statement] statement
       # @return [void]
       def delete_statement(statement)
         delete_statements [statement]
@@ -114,7 +115,7 @@ module RDF
       # Insert multiple statements into this repository
       #
       # @see RDF::Mutable#insert_statements
-      # @param  [Array]
+      # @param  [Array<RDF::Statement>] statements
       # @return [void]
       def insert_statements(statements)
         if @adapter.respond_to?(:multiple_insert_sql)
@@ -139,7 +140,7 @@ module RDF
       # Remove multiple statements from this repository
       #
       # @see RDF::Mutable#delete_statements
-      # @param  [Array]
+      # @param  [Array<RDF::Statement>] statements
       # @return [void]
       def delete_statements(statements)
         query = @adapter.delete_sql
@@ -154,7 +155,7 @@ module RDF
       # implementations considering null values as distinct from one another.
       #
       # @see RDF::DataObjects::Repository#unserialize
-      # @param [RDF::Value]
+      # @param [RDF::Value] value
       # @return [String]
       def serialize(value)
         value.nil? ? 'nil' : RDF::NTriples::Writer.serialize(value)
@@ -165,7 +166,7 @@ module RDF
       # Expects nil values to be encoded as 'nil'.
       #
       # @see RDF::DataObjects::Repository#serialize
-      # @param [String]
+      # @param [String] value
       # @return [RDF::Value]
       def unserialize(value)
         result = value == 'nil' ? nil : RDF::NTriples::Reader.unserialize(value)
@@ -213,7 +214,8 @@ module RDF
       # Iterate over all RDF::Statements in this repository.
       #
       # @see RDF::Enumerable#each
-      # @param [Proc] &block
+      # @yield statement
+      # @yieldparam [RDF::Statement] statement
       # @return [Enumerable::Enumerator, void]
       def each(&block)
         return enum_for(:each) unless block_given?
@@ -231,7 +233,8 @@ module RDF
       # Iterate over all RDF::Resource subjects in this repository.
       #
       # @see RDF::Enumerable#each_subject
-      # @param [Proc] &block
+      # @yield subject
+      # @yieldparam [RDF::Resource] subject
       # @return [Enumerable::Enumerator, void]
       def each_subject(&block) 
         return enum_for(:each_subject) unless block_given?
@@ -245,7 +248,8 @@ module RDF
       # Iterate over all RDF::Resource predicates in this repository.
       #
       # @see RDF::Enumerable#each_predicate
-      # @param [Proc] &block
+      # @yield predicate
+      # @yieldparam [RDF::Resource] predicate
       # @return [Enumerable::Enumerator, void]
       def each_predicate(&block)
         return enum_for(:each_predicate) unless block_given?
@@ -259,7 +263,8 @@ module RDF
       # Iterate over all RDF::Value objects in this repository.
       #
       # @see RDF::Enumerable#each_object
-      # @param [Proc] &block
+      # @yield object
+      # @yieldparam [RDF::Resource] object
       # @return [Enumerable::Enumerator, void]
       def each_object(&block)
         return enum_for(:each_object) unless block_given?
@@ -273,7 +278,8 @@ module RDF
       # Iterate over all RDF::Resource contexts in this repository.
       #
       # @see RDF::Enumerable#each_context
-      # @param [Proc] &block
+      # @yield context
+      # @yieldparam [RDF::Resource] context
       # @return [Enumerable::Enumerator, void]
       def each_context(&block)
         return enum_for(:each_context) unless block_given?
