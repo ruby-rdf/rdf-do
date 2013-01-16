@@ -72,7 +72,7 @@ module RDF::DataObjects
         end
         where = conditions.empty? ? "" : "WHERE "
         where << conditions.join(' AND ')
-        puts "query: #{where.inspect}, #{params.inspect}"
+        #puts "query: #{where.inspect}, #{params.inspect}"
         repository.result('select * from quads ' + where, *params)
       end
 
