@@ -1,6 +1,6 @@
-$:.unshift(File.join(File.dirname(__FILE__),'..','lib'))
-$:.unshift(File.join(File.dirname(__FILE__),'..','..','rdf-spec','lib'))
+$:.unshift(File.expand_path("../../lib/", __FILE__))
 
+require "bundler/setup"
 require 'rdf'
 require 'rdf/spec'
 require 'rdf/spec/repository'
