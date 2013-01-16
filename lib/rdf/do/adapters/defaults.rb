@@ -57,17 +57,13 @@ module RDF::DataObjects
         params = []
         [:subject, :predicate, :object, :context].each do |resource|
           unless hash[resource].nil?
-            if resource == :context
-              case hash[resource]
-              when Symbol, RDF::Query::Variable
-                conditions << "#{resource.to_s} != 'nil'"
-                next
-              when false
-                conditions << "#{resource.to_s} = 'nil'"
-                next
-              else
-                conditions << "#{resource.to_s} = ?"
-              end
+            case hash[resource]
+            when Symbol, RDF::Query::Variable
+              conditions << "#{resource.to_s} != 'nil'"
+              next
+            when false
+              conditions << "#{resource.to_s} = 'nil'"
+              next
             else
               conditions << "#{resource.to_s} = ?"
             end
