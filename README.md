@@ -3,7 +3,7 @@
 DataObjects-backed RDF.rb repository, aiming for a simple use case and
 currently targeting SQLite and Postgres.
 
- * <http://github.com/bhuga/rdf-do>
+ * <http://github.com/ruby-rdf/rdf-do>
  * <http://lists.w3.org/Archives/Public/public-rdf-ruby>
 
 This was written for a tutorial, and is thus a pretty naive implementation so far.
@@ -29,8 +29,6 @@ it's not much.
 The greatly preferred installation method is via RubyGems:
 
     $ sudo gem install rdf-do
-
-Manual downloads are available at <http://github.com/bhuga/rdf-do/downloads>
 
 Ruby 1.8.6 is not supported, but the tests pass with the backports gem.  Godspeed.
 
@@ -87,19 +85,19 @@ Example:
 
 ### Developing
 
-The main project page is on Github, at <http://github.com/bhuga/rdf-do>.  You
+The main project page is on Github, at <http://github.com/ruby-rdf/rdf-do>.  You
 can get a working copy of the source tree with:
 
-    $ git clone git://github.com/bhuga/rdf-do.git
+    $ git clone git://github.com/ruby-rdf/rdf-do.git
 
 Or with:
 
-    $ wget http://github.com/bhuga/rdf-do/tarball/master
+    $ wget http://github.com/ruby-rdf/rdf-do/tarball/master
 
 ### Support
 
 The preferred method to report issues is the issue queue at
-<http://github.com/bhuga/rdf-do/issues>.  You'll get the the most attention if
+<http://github.com/ruby-rdf/rdf-do/issues>.  You'll get the the most attention if
 you submit a failing test for a bug, or a pending test for a feature. 
 
 We'd also like to hear from you on the mailing list:
