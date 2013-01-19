@@ -27,11 +27,11 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version      = '>= 1.8.2'
   gem.requirements               = []
-  gem.add_runtime_dependency     'rdf',          '>= 0.3.11'
+  gem.add_runtime_dependency     'rdf',          '>= 1.0'
   gem.add_runtime_dependency     'data_objects', '>= 0.10.11'
   gem.add_development_dependency 'do_sqlite3' ,  '>= 0.10.11'
   gem.add_development_dependency 'do_postgres' , '>= 0.10.11'
-  gem.add_development_dependency 'rdf-spec',     '>= 0.3.11'
+  gem.add_development_dependency 'rdf-spec',     '>= 1.0'
   gem.add_development_dependency 'rspec',        '>= 2.12.0'
   gem.add_development_dependency 'yard' ,        '>= 0.8.3'
   gem.post_install_message       = nil
