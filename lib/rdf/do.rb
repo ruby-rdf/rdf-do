@@ -291,6 +291,19 @@ module RDF
       end
 
       ##
+      # The number of statements in this repository
+      # 
+      # @see RDF::Enumerable#count
+      # @return [Integer]
+      def count
+        result = result(@adapter.count_sql)
+        result.next!
+        result.values.first
+      end
+
+      protected
+
+      ##
       # Implementation of RDF::Queryable#query_pattern
       #  
       # This implementation will do well for statements and hashes, and not so
@@ -312,17 +325,6 @@ module RDF
               :object    => unserialize(reader.values[2]),
               :context   => unserialize(reader.values[3]))
         end
-      end
-
-      ##
-      # The number of statements in this repository
-      # 
-      # @see RDF::Enumerable#count
-      # @return [Integer]
-      def count
-        result = result(@adapter.count_sql)
-        result.next!
-        result.values.first
       end
 
     end
