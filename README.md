@@ -30,7 +30,7 @@ The greatly preferred installation method is via RubyGems:
 
     $ sudo gem install rdf-do
 
-Ruby 1.8.6 is not supported, but the tests pass with the backports gem.  Godspeed.
+Requires Ruby >= 1.9.2
 
 ## Connecting:
     require 'do_postgres'
