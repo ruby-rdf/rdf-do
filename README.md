@@ -33,8 +33,10 @@ The greatly preferred installation method is via RubyGems:
 Ruby 1.8.6 is not supported, but the tests pass with the backports gem.  Godspeed.
 
 ## Connecting:
-    require 'do_postgres'
-    require 'do_sqlite3'
+    require 'rdf'
+    require 'rdf/do'
+    require 'do_postgres' # gem install do_postgres
+    require 'do_sqlite3'  # gem install do_sqlite3
     repo = RDF::DataObjects::Repository.new "postgres://localhost/database"
     repo = RDF::DataObjects::Repository.new "sqlite3:test.db"
 
