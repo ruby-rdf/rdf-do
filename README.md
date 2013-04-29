@@ -6,6 +6,9 @@ currently targeting SQLite and Postgres.
  * <http://github.com/ruby-rdf/rdf-do>
  * <http://lists.w3.org/Archives/Public/public-rdf-ruby>
 
+[![Gem Version](https://badge.fury.io/rb/rdf-do.png)](http://badge.fury.io/rb/rdf-do)
+[![Build Status](https://travis-ci.org/ruby-rdf/rdf-do.png?branch=master)](http://travis-ci.org/ruby-rdf/rdf-do)
+
 This was written for a tutorial, and is thus a pretty naive implementation so far.
 RDF::DataObjects stores triples in a simple subject, predicate, object, context
 table.  Don't try to back a big website with it yet.  Nonetheless, it works,
