@@ -5,7 +5,7 @@ describe RDF::DataObjects::Repository do
   if ENV['DATABASE_URL']
     context "The Postgres adapter" do
       before :all do
-        @load_durable = @repository = RDF::DataObjects::Repository.new ENV['DATABASE_URL']
+        @load_durable = @repository = RDF::DataObjects::Repository.new(ENV['DATABASE_URL'])
         @repository.clear
       end
 
