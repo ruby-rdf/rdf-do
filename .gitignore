@@ -3,3 +3,4 @@ doc
 coverage
 .yardoc
 /*.lock
+/pkg

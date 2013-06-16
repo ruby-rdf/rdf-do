@@ -1,46 +1,24 @@
 require 'rubygems'
-require 'spec'
-require 'spec/rake/spectask'
+require 'rspec/core/rake_task'
 require 'yard'
 
-desc 'Run specs'
-task 'spec' do
-  Spec::Rake::SpecTask.new("spec") do |t|
-    t.spec_files = FileList["spec/*.spec","spec/*.rb"]
-    t.rcov = true
-    t.spec_opts = ["-c"]
+namespace :gem do
+  desc "Build the rdf-do-#{File.read('VERSION').chomp}.gem file"
+  task :build do
+    sh "gem build rdf-do.gemspec && mv rdf-do-#{File.read('VERSION').chomp}.gem pkg/"
+  end
+
+  desc "Release the rdf-do-#{File.read('VERSION').chomp}.gem file"
+  task :release do
+    sh "gem push pkg/rdf-do-#{File.read('VERSION').chomp}.gem"
   end
 end
 
-desc 'Run specs with backtrace'
-task 'tracespec' do
-  Spec::Rake::SpecTask.new("tracespec") do |t|
-    t.spec_files = FileList["spec/*.spec"]
-    t.rcov = false
-    t.spec_opts = ["-bcfn"]
-  end
+RSpec::Core::RakeTask.new(:spec)
+
+desc "Run specs through RCov"
+RSpec::Core::RakeTask.new("spec:rcov") do |spec|
+  spec.rcov = true
+  spec.rcov_opts =  %q[--exclude "spec"]
 end
-
-desc 'Run sqlite3 specs'
-task 'sqlite' do
-  Spec::Rake::SpecTask.new("sqlite") do |t|
-    t.spec_files = FileList["spec/sqlite3.spec"]
-    t.spec_opts = ["-bcfn"]
-  end
-end
-
-desc 'Run postgres specs'
-task 'pg' do
-  Spec::Rake::SpecTask.new("pg") do |t|
-    t.spec_files = FileList["spec/postgres.spec"]
-    t.spec_opts = ["-bcfn"]
-  end
-end
-
-
-desc "Open an irb session with everything loaded, including test fixtures"
-task :console do
-  sh "irb -rubygems -I lib -r rdf -r rdf/do"
-end
-
 task :default => [:spec]
