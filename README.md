@@ -6,6 +6,9 @@ currently targeting SQLite and Postgres.
  * <http://github.com/ruby-rdf/rdf-do>
  * <http://lists.w3.org/Archives/Public/public-rdf-ruby>
 
+[![Gem Version](https://badge.fury.io/rb/rdf-do.png)](http://badge.fury.io/rb/rdf-do)
+[![Build Status](https://travis-ci.org/ruby-rdf/rdf-do.png?branch=1.1)](http://travis-ci.org/ruby-rdf/rdf-do)
+
 This was written for a tutorial, and is thus a pretty naive implementation so far.
 RDF::DataObjects stores triples in a simple subject, predicate, object, context
 table.  Don't try to back a big website with it yet.  Nonetheless, it works,
@@ -33,8 +36,10 @@ The greatly preferred installation method is via RubyGems:
 Requires Ruby >= 1.9.2
 
 ## Connecting:
-    require 'do_postgres'
-    require 'do_sqlite3'
+    require 'rdf'
+    require 'rdf/do'
+    require 'do_postgres' # gem install do_postgres
+    require 'do_sqlite3'  # gem install do_sqlite3
     repo = RDF::DataObjects::Repository.new "postgres://localhost/database"
     repo = RDF::DataObjects::Repository.new "sqlite3:test.db"
 

@@ -8,5 +8,5 @@ gem "rdf-spec", :git => "git://github.com/ruby-rdf/rdf-spec.git", :branch => "1.
 group :debug do
   gem 'shotgun'
   gem "wirble"
-  gem "debugger"
+  gem "debugger", :platforms => :mri_19
 end

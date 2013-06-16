@@ -4,14 +4,19 @@ require 'do_postgres'
 describe RDF::DataObjects::Repository do
   if ENV['DATABASE_URL']
     context "The Postgres adapter" do
-      before :each do
-        @repository = RDF::DataObjects::Repository.new ENV['DATABASE_URL']
+      before :all do
+        @load_durable = @repository = RDF::DataObjects::Repository.new(ENV['DATABASE_URL'])
         @repository.clear
       end
 
-      after :each do
+      after :all do
         @repository.close
         DataObjects::Pooling.pools.each {|pool| pool.dispose}
+      end
+
+      after :each do
+        DataObjects::Pooling.pools.each {|pool| pool.dispose}
+        @repository.clear
       end
 
       # @see lib/rdf/spec/repository.rb in RDF-spec
