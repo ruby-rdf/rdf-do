@@ -11,7 +11,6 @@ describe RDF::DataObjects::Repository do
     after :all do
       File.delete('test.db') if File.exists?('test.db')
       @repository.close
-      @load_durable.close
     end
 
     after :each do
@@ -24,5 +23,3 @@ describe RDF::DataObjects::Repository do
   end
 
 end
-
-
