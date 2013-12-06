@@ -1,6 +1,6 @@
 # RDF::DataObjects
 
-DataObjects-backed RDF.rb repository, aiming for a simple use case and
+DataObjects-backed [RDF.rb][] repository, aiming for a simple use case and
 currently targeting SQLite and Postgres.
 
  * <http://github.com/ruby-rdf/rdf-do>
@@ -27,15 +27,15 @@ different databases are *just* different enough with their handling of unique
 constraints that some database-specific work is required for a new adapter, but
 it's not much.
 
-## Installation:
+## Installation
 
 The greatly preferred installation method is via RubyGems:
 
     $ sudo gem install rdf-do
 
-Ruby 1.8.6 is not supported, but the tests pass with the backports gem.  Godspeed.
+Requires Ruby >= 1.9.2
 
-## Connecting:
+## Connecting
     require 'rdf'
     require 'rdf/do'
     require 'do_postgres' # gem install do_postgres
@@ -44,10 +44,10 @@ Ruby 1.8.6 is not supported, but the tests pass with the backports gem.  Godspee
     repo = RDF::DataObjects::Repository.new "sqlite3:test.db"
 
 
-## Using:
+## Using
 
-Your repository is a fully-functional RDF.rb `RDF::Repository`.  As with any
-RDF.rb repository, this includes the mixins `RDF::Enumerable`, `RDF::Mutable`,
+Your repository is a fully-functional [RDF.rb][] `RDF::Repository`.  As with any
+[RDF.rb][] repository, this includes the mixins `RDF::Enumerable`, `RDF::Mutable`,
 `RDF::Durable`, and `RDF::Queryable`.  Please see <http://rdf.rubyforge.org/RDF/Repository.html> for
 more information.
 
@@ -86,20 +86,22 @@ Example:
     repo.count
     #=> 10
 
+## Contributing
+This repository uses [Git Flow](https://github.com/nvie/gitflow) to mange development and release activity. All submissions _must_ be on a feature branch based on the _develop_ branch to ease staging and integration.
 
+* Do your best to adhere to the existing coding conventions and idioms.
+* Don't use hard tabs, and don't leave trailing whitespace on any line.
+* Do document every method you add using [YARD][] annotations. Read the
+  [tutorial][YARD-GS] or just look at the existing code for examples.
+* Don't touch the `.gemspec`, `VERSION` or `AUTHORS` files. If you need to
+  change them, do so on your private branch only.
+* Do feel free to add yourself to the `CREDITS` file and the corresponding
+  list in the the `README`. Alphabetical order applies.
+* Do note that in order for us to merge any non-trivial changes (as a rule
+  of thumb, additions larger than about 15 lines of code), we need an
+  explicit [public domain dedication][PDD] on record from you.
 
-### Developing
-
-The main project page is on Github, at <http://github.com/ruby-rdf/rdf-do>.  You
-can get a working copy of the source tree with:
-
-    $ git clone git://github.com/ruby-rdf/rdf-do.git
-
-Or with:
-
-    $ wget http://github.com/ruby-rdf/rdf-do/tarball/master
-
-### Support
+## Support
 
 The preferred method to report issues is the issue queue at
 <http://github.com/ruby-rdf/rdf-do/issues>.  You'll get the the most attention if
@@ -108,8 +110,12 @@ you submit a failing test for a bug, or a pending test for a feature.
 We'd also like to hear from you on the mailing list:
 <http://lists.w3.org/Archives/Public/public-rdf-ruby>
 
-### Miscellany
+## Miscellany
 
- * Author: Ben Lavender | <blavender@gmail.com> | <http://bhuga.net> | <http://blog.datagraph.org>
- * 'License':  RDF::DataObjects is free and unemcumbered software released into the public domain.  For more information, see the included UNLICENSE file.
+* Author: Ben Lavender | <blavender@gmail.com> | <http://bhuga.net> | <http://blog.datagraph.org>
+* 'License':  RDF::DataObjects is free and unemcumbered software released into the public domain.  For more information, see the included UNLICENSE file.
 
+[RDF.rb]:           http://rubygems.org/gems/rdf
+[YARD]:             http://yardoc.org/
+[YARD-GS]:          http://rubydoc.info/docs/yard/file/docs/GettingStarted.md
+[PDD]:              http://lists.w3.org/Archives/Public/public-rdf-ruby/2010May/0013.html

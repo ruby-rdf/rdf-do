@@ -6,4 +6,4 @@ env:
 rvm:
   - 2.0.0
   - 1.9.3
-  - rbx-19mode
+  - rbx
