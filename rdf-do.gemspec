@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.name               = 'rdf-do'
   gem.homepage           = 'http://ruby-rdf.github.com/rdf-do'
   gem.license            = 'Public Domain' if gem.respond_to?(:license=)
-  gem.description        = 'RDF.rb plugin providing a DataObjects storage adapter.'
-  gem.summary            = 'RDF.rb plugin providing a DataObjects storage adapter.'
+  gem.description        = 'RDF.rb extension providing a DataObjects storage adapter.'
+  gem.summary            = 'RDF.rb extension providing a DataObjects storage adapter.'
   gem.rubyforge_project  = 'rdf'
 
   gem.authors            = ['Ben Lavender']
