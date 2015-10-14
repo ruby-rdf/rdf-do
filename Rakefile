@@ -21,4 +21,4 @@ RSpec::Core::RakeTask.new("spec:rcov") do |spec|
   spec.rcov = true
   spec.rcov_opts =  %q[--exclude "spec"]
 end
-task :default => [:spec]
+task default: [:spec]

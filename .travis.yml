@@ -10,3 +10,4 @@ rvm:
   - 1.9.3
   - rbx-2
 cache: bundler
+sudo: false

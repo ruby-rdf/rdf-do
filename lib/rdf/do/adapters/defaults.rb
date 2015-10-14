@@ -49,23 +49,24 @@ module RDF::DataObjects
       # Supports `false` for a specifically nil value representing the default context.
       #
       # @example
-      #     adapter.query(repository, :predicate => predicate)
+      #     adapter.query(repository, predicate: predicate)
       # @return [DataObjects::Result]
       def query(repository, hash = {})
         return repository.result(each_sql) if hash.empty?
         conditions = []
         params = []
-        [:subject, :predicate, :object, :context].each do |resource|
+        [:subject, :predicate, :object, :graph_name].each do |resource|
+          do_resource = resource == :graph_name ? :context : resource
           unless hash[resource].nil?
             case hash[resource]
             when Symbol, RDF::Query::Variable
-              conditions << "#{resource.to_s} != 'nil'"
+              conditions << "#{do_resource} != 'nil'"
               next
             when false
-              conditions << "#{resource.to_s} = 'nil'"
+              conditions << "#{do_resource} = 'nil'"
               next
             else
-              conditions << "#{resource.to_s} = ?"
+              conditions << "#{do_resource} = ?"
             end
             params     << repository.serialize(hash[resource])
           end
