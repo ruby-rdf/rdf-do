@@ -13,4 +13,4 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq postgresql-server-dev-9.4
 cache: bundler
-sudo: false
+sudo: true
