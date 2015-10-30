@@ -59,7 +59,7 @@ module RDF
       # @see RDF::Mutable#insert_statement
       def supports?(feature)
         case feature.to_sym
-          when :context then true
+          when :graph_name then true
           else false
         end
       end
@@ -124,14 +124,14 @@ module RDF
           count = 0
           statements.__send__(each) do |s|
             count += 1
-            args += [serialize(s.subject),serialize(s.predicate), serialize(s.object), serialize(s.context)]
+            args += [serialize(s.subject),serialize(s.predicate), serialize(s.object), serialize(s.graph_name)]
           end
           query = @adapter.multiple_insert_sql(count)
           exec(query,*(args.flatten))
         else
           query = @adapter.insert_sql
           statements.each do |s|
-            exec(query, serialize(s.subject),serialize(s.predicate), serialize(s.object), serialize(s.context)) 
+            exec(query, serialize(s.subject),serialize(s.predicate), serialize(s.object), serialize(s.graph_name)) 
           end
         end
       end
@@ -145,7 +145,7 @@ module RDF
       def delete_statements(statements)
         query = @adapter.delete_sql
         statements.each do |s|
-          exec(query, serialize(s.subject), serialize(s.predicate), serialize(s.object), serialize(s.context)) 
+          exec(query, serialize(s.subject), serialize(s.predicate), serialize(s.object), serialize(s.graph_name)) 
         end
       end
 
@@ -222,10 +222,10 @@ module RDF
         reader = result(@adapter.each_sql)
         while reader.next!
           block.call(RDF::Statement.new(
-                     :subject   => unserialize(reader.values[0]),
-                     :predicate => unserialize(reader.values[1]),
-                     :object    => unserialize(reader.values[2]),
-                     :context   => unserialize(reader.values[3])))
+                     subject:    unserialize(reader.values[0]),
+                     predicate:  unserialize(reader.values[1]),
+                     object:     unserialize(reader.values[2]),
+                     graph_name: unserialize(reader.values[3])))
         end
       end
 
@@ -275,18 +275,21 @@ module RDF
       end
 
       ##
-      # Iterate over all RDF::Resource contexts in this repository.
+      # Iterate over all RDF::Resource graph names in this repository.
       #
-      # @see RDF::Enumerable#each_context
-      # @yield context
-      # @yieldparam [RDF::Resource] context
+      # @see RDF::Enumerable#each_graph
+      # @yield graph
+      # @yieldparam [RDF::Graph] graph
       # @return [Enumerable::Enumerator, void]
-      def each_context(&block)
-        return enum_for(:each_context) unless block_given?
+      def each_graph(&block)
+        return enum_for(:each_graph) unless block_given?
+
+        # Default graph
+        yield RDF::Graph.new(nil, data: self)
         reader = result(@adapter.each_context_sql)
         while reader.next!
-          context = unserialize(reader.values[0])
-          block.call(context) unless context.nil?
+          graph_name = unserialize(reader.values[0])
+          yield RDF::Graph.new(graph_name, data: self)
         end
       end
 
@@ -320,10 +323,10 @@ module RDF
         reader = @adapter.query(self,pattern.to_hash)
         while reader.next!
           yield RDF::Statement.new(
-              :subject   => unserialize(reader.values[0]),
-              :predicate => unserialize(reader.values[1]),
-              :object    => unserialize(reader.values[2]),
-              :context   => unserialize(reader.values[3]))
+              subject:    unserialize(reader.values[0]),
+              predicate:  unserialize(reader.values[1]),
+              object:     unserialize(reader.values[2]),
+              graph_name: unserialize(reader.values[3]))
         end
       end
 

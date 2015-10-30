@@ -19,8 +19,9 @@ describe RDF::DataObjects::Repository do
         @repository.clear
       end
 
-      # @see lib/rdf/spec/repository.rb in RDF-spec
-      include RDF_Repository
+      it_behaves_like "an RDF::Repository" do
+        let(:repository) {@repository}
+      end
     end
   else
     warn "Skipping postgres tests; no DATABASE_URL found."

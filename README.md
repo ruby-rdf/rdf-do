@@ -73,13 +73,13 @@ Example:
     #=> #<RDF::URI(http://datagraph.org/jhacker/foaf)>
 
     # Delete everything to do with it
-    jhacker_statements = repo.query(:subject => jhacker) 
+    jhacker_statements = repo.query(subject: jhacker) 
     repo.delete *jhacker_statements
     repo.count
     #=> 7
 
     # with Postgres, we could have done this, but SQLite gives us a locking error:
-    # repo.delete(*repo.query(:subject => jhacker))
+    # repo.delete(*repo.query(subject: jhacker))
 
     # Changed our mind--bring it back
     repo.insert *jhacker_statements
