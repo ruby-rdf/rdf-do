@@ -31,7 +31,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency     'data_objects', '~> 0.10'
   gem.add_development_dependency 'do_sqlite3' ,  '~> 0.10'
   gem.add_development_dependency 'do_postgres' , '~> 0.10'
-  gem.add_development_dependency 'rdf-spec',     '~> 1.1'
+  gem.add_development_dependency 'rdf-spec',     '~> 1.99'
   gem.add_development_dependency 'rspec',        '~> 3.2'
   gem.add_development_dependency 'rspec-its',    '~> 1.0'
   gem.add_development_dependency 'yard' ,        '~> 0.8'

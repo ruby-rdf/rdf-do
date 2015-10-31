@@ -98,6 +98,7 @@ module RDF
       # @param [RDF::Statement] statement
       # @return [void]
       def insert_statement(statement)
+        raise ArgumentError, "Statement #{statement.inspect} is incomplete" if statement.incomplete?
         insert_statements [statement]
       end
 
@@ -118,6 +119,7 @@ module RDF
       # @param  [Array<RDF::Statement>] statements
       # @return [void]
       def insert_statements(statements)
+        raise ArgumentError, "Some statement is incomplete" if statements.any?(&:incomplete?)
         if @adapter.respond_to?(:multiple_insert_sql)
           each = statements.respond_to?(:each_statement) ? :each_statement : :each
           args = []
