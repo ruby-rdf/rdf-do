@@ -109,7 +109,8 @@ module RDF
       # @param [RDF::Statement] statement
       # @return [void]
       def delete_statement(statement)
-        delete_statements [statement]
+        query = @adapter.delete_sql
+        exec(query, serialize(statement.subject), serialize(statement.predicate), serialize(statement.object), serialize(statement.graph_name)) 
       end
 
       ##
@@ -132,22 +133,10 @@ module RDF
           exec(query,*(args.flatten))
         else
           query = @adapter.insert_sql
-          statements.each do |s|
+          each = statements.respond_to?(:each_statement) ? :each_statement : :each
+          statements.__send__(each) do |s|
             exec(query, serialize(s.subject),serialize(s.predicate), serialize(s.object), serialize(s.graph_name)) 
           end
-        end
-      end
-
-      ##
-      # Remove multiple statements from this repository
-      #
-      # @see RDF::Mutable#delete_statements
-      # @param  [Array<RDF::Statement>] statements
-      # @return [void]
-      def delete_statements(statements)
-        query = @adapter.delete_sql
-        statements.each do |s|
-          exec(query, serialize(s.subject), serialize(s.predicate), serialize(s.object), serialize(s.graph_name)) 
         end
       end
 
