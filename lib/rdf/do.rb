@@ -286,9 +286,7 @@ module RDF
       def each_graph(&block)
         return enum_for(:each_graph) unless block_given?
 
-        # Default graph
-        yield RDF::Graph.new(nil, data: self)
-        reader = result(@adapter.each_context_sql)
+        reader = result(@adapter.each_graph_sql)
         while reader.next!
           graph_name = unserialize(reader.values[0])
           yield RDF::Graph.new(graph_name, data: self)
@@ -320,7 +318,8 @@ module RDF
       # @param [RDF::Query::Pattern] pattern
       # @see RDF::Queryable#query_pattern
       # @see RDF::Query::Pattern
-      def query_pattern(pattern, &block)
+      def query_pattern(pattern, options = {}, &block)
+        return enum_for(:query_pattern, pattern, options) unless block_given?
         @nodes = {} # reset cache. FIXME this should probably be in Node.intern
         reader = @adapter.query(self,pattern.to_hash)
         while reader.next!
