@@ -3,24 +3,30 @@ require 'do_sqlite3'
 
 describe RDF::DataObjects::Repository do
   context "The SQLite adapter" do
+    let(:repository) {RDF::DataObjects::Repository.new "sqlite3://:memory:"}
     before :all do
-      @repository = RDF::DataObjects::Repository.new "sqlite3://:memory:"
       @load_durable = lambda { RDF::DataObjects::Repository.new "sqlite3:test.db" }
     end
-
+  
     after :all do
       File.delete('test.db') if File.exists?('test.db')
-      @repository.close
     end
-
+  
     after :each do
       DataObjects::Sqlite3::Connection.__pools.clear
-      @repository.clear
     end
+  
+    it_behaves_like "an RDF::Repository"
 
-    it_behaves_like "an RDF::Repository" do
-      let(:repository) {@repository}
+    context "problematic examples" do
+      Dir.glob(File.expand_path("../datafiles/*.nt", __FILE__)).each do |f|
+        it "loads #{f}" do
+          repo = @load_durable.call
+          repo.clear
+          count = File.readlines(f).length
+          expect {repo.load(f)}.to change {repo.count}.from(0).to(count)
+        end
+      end
     end
   end
-
 end
