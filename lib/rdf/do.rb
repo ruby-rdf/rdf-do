@@ -278,7 +278,7 @@ module RDF
         reader = result(@adapter.each_graph_sql)
         while reader.next!
           graph_name = unserialize(reader.values[0])
-          yield RDF::Graph.new(graph_name, data: self)
+          yield RDF::Graph.new(graph_name: graph_name, data: self)
         end
       end
 
