@@ -23,37 +23,36 @@ module RDF
     #
     class Repository < RDF::Repository
 
-      ## Create a new RDF::DataObjects::Repository
+      ##
+      # Initializes this repository instance.
       # 
-      # The `options` parameter can be anything that
-      # DataObjects::Connection.new accepts.  The correct
-      # RDF::Repository::DataObjects adapter will be loaded based on the URI
-      # scheme of the created connection.
-      #
       # @example
       #     RDF::DataObjects::Repository.new  # => new Repository based on sqlite3://:memory:
-      #     RDF::DataObjects::Repository.new 'postgres://localhost/database'
+      #     RDF::DataObjects::Repository.new uri: 'postgres://localhost/database'
       #       => New repository based on postgres adapter
-      # @param [Any] options
+      #
+      # @param  [Hash{Symbol => Object}] options
+      # @option options [URI, #to_s]    :uri (nil)
+      # @option options [String, #to_s] :title (nil)
+      # @option options [String, #to_s] :adaptor (nil)
+      #   The default adapter will be loaded based on the URI
+      #   scheme of the created connection.
+      # @option options [String] :db Synonym for :uri
       # @return [RDF::DataObjects::Repository]
-      def initialize(options = {})
-        begin
-          case options
-            when String
-              @db     = ::DataObjects::Connection.new(options)
-            when Hash
-              @db     = ::DataObjects::Connection.new(options[:db])
-              adapter = options[:adapter]
-            when nil
-              @db    = ::DataObjects::Connection.new('sqlite3://:memory:')
-          end
-          adapter = @db.instance_variable_get("@uri").scheme
-          require 'rdf/do/adapters/' + adapter.to_s
-        rescue Exception => e
-          raise LoadError, "Could not load a DataObjects adapter for #{options}.  You may need to add a 'require do_adapter', or you may be trying to use an unsupported adapter (Currently supporting postgres, sqlite3).  The error message was: #{e.message}"
-        end
+      def initialize(options = {}, &block)
+        warn "[DEPRECATION] RDF::DataObjects::Repository#initialize expects a uri argument. Called from #{Gem.location_of_caller.join(':')}" unless options.is_a?(Hash)
+        options = {uri: options.to_s} unless options.is_a?(Hash)
+        db = options[:uri] || options[:db] || 'sqlite3://:memory:'
+        @db = ::DataObjects::Connection.new(db)
+
+        adapter = options[:adapter] || @db.instance_variable_get("@uri").scheme
+        require 'rdf/do/adapters/' + adapter.to_s
+
         @adapter = RDF::DataObjects::Adapters::const_get(adapter.to_s.capitalize)
         @adapter.migrate? self
+        super(options, &block)
+      rescue Exception => e
+        raise LoadError, "Could not load a DataObjects adapter for #{options}.  You may need to add a 'require do_adapter', or you may be trying to use an unsupported adapter (Currently supporting postgres, sqlite3).  The error message was: #{e.message}"
       end
 
       # @see RDF::Mutable#insert_statement
