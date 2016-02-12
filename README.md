@@ -16,7 +16,7 @@ and it passes all its tests on Heroku as well.
 
 Example:
 
-    repository = RDF::DataObjects::Repository.new "sqlite3:test.db"
+    repository = RDF::DataObjects::Repository.new uri: "sqlite3:test.db"
     repository.insert(statement)
     repository.count              #=> 1
     repository.delete(statement)
@@ -40,8 +40,8 @@ Requires Ruby >= 2.0
     require 'rdf/do'
     require 'do_postgres' # gem install do_postgres
     require 'do_sqlite3'  # gem install do_sqlite3
-    repo = RDF::DataObjects::Repository.new "postgres://localhost/database"
-    repo = RDF::DataObjects::Repository.new "sqlite3:test.db"
+    repo = RDF::DataObjects::Repository.new uri: "postgres://localhost/database"
+    repo = RDF::DataObjects::Repository.new uri: "sqlite3:test.db"
 
 
 ## Using
@@ -59,9 +59,9 @@ Example:
     require 'do_sqlite3'
     require 'rdf/do'
 
-    repo = RDF::DataObjects::Repository.new('sqlite3:test.db')
-    # repo = RDF::DataObjects::Repository.new 'postgres://postgres@server/database'
-    # heroku_repo = RDF::DataObjects::Repository.new(ENV['DATABASE_URL'])
+    repo = RDF::DataObjects::Repository.new uri: 'sqlite3:test.db'
+    # repo = RDF::DataObjects::Repository.new uri: 'postgres://postgres@server/database'
+    # heroku_repo = RDF::DataObjects::Repository.new uri: ENV['DATABASE_URL']
     repo.load('http://datagraph.org/jhacker/foaf.nt')
 
     # How many statements did we have?
