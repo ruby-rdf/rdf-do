@@ -5,9 +5,12 @@ describe RDF::DataObjects::Repository do
   context "The SQLite adapter" do
     let(:repository) {RDF::DataObjects::Repository.new uri: "sqlite3://:memory:"}
 
-    before(:each) {@load_durable = lambda { RDF::DataObjects::Repository.new uri: "sqlite3:test.db" }}
+    before(:all) {@load_durable = lambda { RDF::DataObjects::Repository.new uri: "sqlite3:test.db" }}
     after(:all) {File.delete('test.db') if File.exists?('test.db')}
-    after(:each) {DataObjects::Sqlite3::Connection.__pools.clear}
+    after(:each) do
+      DataObjects::Sqlite3::Connection.__pools.clear
+      repository.dispose
+    end
 
     it_behaves_like "an RDF::Repository"
 
