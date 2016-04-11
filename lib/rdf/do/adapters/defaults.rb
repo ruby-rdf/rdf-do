@@ -35,7 +35,7 @@ module RDF::DataObjects
         'select distinct object from quads'
       end
 
-      def each_context_sql
+      def each_graph_sql
         'select distinct context from quads'
       end
 

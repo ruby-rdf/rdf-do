@@ -1,16 +1,21 @@
 language: ruby
 bundler_args: --without debug
+before_script:
+  - ulimit -c unlimited -S
 script: "bundle exec rspec spec"
 env:
   - CI=true
 rvm:
   - 2.0
   - 2.1
-  - 2.2
-  - 1.9.3
+  - 2.2.4
+  - 2.3.0
   - rbx-2
 before_install: 
   - sudo apt-get update -qq
   - sudo apt-get install -qq postgresql-server-dev-9.4
 cache: bundler
 sudo: true
+matrix:
+  allow_failures:
+    - rvm: rbx-2

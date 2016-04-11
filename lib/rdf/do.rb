@@ -23,37 +23,36 @@ module RDF
     #
     class Repository < RDF::Repository
 
-      ## Create a new RDF::DataObjects::Repository
+      ##
+      # Initializes this repository instance.
       # 
-      # The `options` parameter can be anything that
-      # DataObjects::Connection.new accepts.  The correct
-      # RDF::Repository::DataObjects adapter will be loaded based on the URI
-      # scheme of the created connection.
-      #
       # @example
       #     RDF::DataObjects::Repository.new  # => new Repository based on sqlite3://:memory:
-      #     RDF::DataObjects::Repository.new 'postgres://localhost/database'
+      #     RDF::DataObjects::Repository.new uri: 'postgres://localhost/database'
       #       => New repository based on postgres adapter
-      # @param [Any] options
+      #
+      # @param  [Hash{Symbol => Object}] options
+      # @option options [URI, #to_s]    :uri (nil)
+      # @option options [String, #to_s] :title (nil)
+      # @option options [String, #to_s] :adaptor (nil)
+      #   The default adapter will be loaded based on the URI
+      #   scheme of the created connection.
+      # @option options [String] :db Synonym for :uri
       # @return [RDF::DataObjects::Repository]
-      def initialize(options = {})
-        begin
-          case options
-            when String
-              @db     = ::DataObjects::Connection.new(options)
-            when Hash
-              @db     = ::DataObjects::Connection.new(options[:db])
-              adapter = options[:adapter]
-            when nil
-              @db    = ::DataObjects::Connection.new('sqlite3://:memory:')
-          end
-          adapter = @db.instance_variable_get("@uri").scheme
-          require 'rdf/do/adapters/' + adapter.to_s
-        rescue Exception => e
-          raise LoadError, "Could not load a DataObjects adapter for #{options}.  You may need to add a 'require do_adapter', or you may be trying to use an unsupported adapter (Currently supporting postgres, sqlite3).  The error message was: #{e.message}"
-        end
+      def initialize(options = {}, &block)
+        warn "[DEPRECATION] RDF::DataObjects::Repository#initialize expects a uri argument. Called from #{Gem.location_of_caller.join(':')}" unless options.is_a?(Hash)
+        options = {uri: options.to_s} unless options.is_a?(Hash)
+        db = options[:uri] || options[:db] || 'sqlite3://:memory:'
+        @db = ::DataObjects::Connection.new(db)
+
+        adapter = options[:adapter] || @db.instance_variable_get("@uri").scheme
+        require 'rdf/do/adapters/' + adapter.to_s
+
         @adapter = RDF::DataObjects::Adapters::const_get(adapter.to_s.capitalize)
         @adapter.migrate? self
+        super(options, &block)
+      rescue Exception => e
+        raise LoadError, "Could not load a DataObjects adapter for #{options}.  You may need to add a 'require do_adapter', or you may be trying to use an unsupported adapter (Currently supporting postgres, sqlite3).  The error message was: #{e.message}"
       end
 
       # @see RDF::Mutable#insert_statement
@@ -98,6 +97,7 @@ module RDF
       # @param [RDF::Statement] statement
       # @return [void]
       def insert_statement(statement)
+        raise ArgumentError, "Statement #{statement.inspect} is incomplete" if statement.incomplete?
         insert_statements [statement]
       end
 
@@ -108,7 +108,8 @@ module RDF
       # @param [RDF::Statement] statement
       # @return [void]
       def delete_statement(statement)
-        delete_statements [statement]
+        query = @adapter.delete_sql
+        exec(query, serialize(statement.subject), serialize(statement.predicate), serialize(statement.object), serialize(statement.graph_name)) 
       end
 
       ##
@@ -118,6 +119,7 @@ module RDF
       # @param  [Array<RDF::Statement>] statements
       # @return [void]
       def insert_statements(statements)
+        raise ArgumentError, "Some statement is incomplete" if statements.any?(&:incomplete?)
         if @adapter.respond_to?(:multiple_insert_sql)
           each = statements.respond_to?(:each_statement) ? :each_statement : :each
           args = []
@@ -130,22 +132,10 @@ module RDF
           exec(query,*(args.flatten))
         else
           query = @adapter.insert_sql
-          statements.each do |s|
+          each = statements.respond_to?(:each_statement) ? :each_statement : :each
+          statements.__send__(each) do |s|
             exec(query, serialize(s.subject),serialize(s.predicate), serialize(s.object), serialize(s.graph_name)) 
           end
-        end
-      end
-
-      ##
-      # Remove multiple statements from this repository
-      #
-      # @see RDF::Mutable#delete_statements
-      # @param  [Array<RDF::Statement>] statements
-      # @return [void]
-      def delete_statements(statements)
-        query = @adapter.delete_sql
-        statements.each do |s|
-          exec(query, serialize(s.subject), serialize(s.predicate), serialize(s.object), serialize(s.graph_name)) 
         end
       end
 
@@ -284,12 +274,10 @@ module RDF
       def each_graph(&block)
         return enum_for(:each_graph) unless block_given?
 
-        # Default graph
-        yield RDF::Graph.new(nil, data: self)
-        reader = result(@adapter.each_context_sql)
+        reader = result(@adapter.each_graph_sql)
         while reader.next!
           graph_name = unserialize(reader.values[0])
-          yield RDF::Graph.new(graph_name, data: self)
+          yield RDF::Graph.new(graph_name: graph_name, data: self)
         end
       end
 
@@ -318,7 +306,8 @@ module RDF
       # @param [RDF::Query::Pattern] pattern
       # @see RDF::Queryable#query_pattern
       # @see RDF::Query::Pattern
-      def query_pattern(pattern, &block)
+      def query_pattern(pattern, options = {}, &block)
+        return enum_for(:query_pattern, pattern, options) unless block_given?
         @nodes = {} # reset cache. FIXME this should probably be in Node.intern
         reader = @adapter.query(self,pattern.to_hash)
         while reader.next!
