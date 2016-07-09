@@ -33,7 +33,7 @@ The greatly preferred installation method is via RubyGems:
 
     $ sudo gem install rdf-do
 
-Requires Ruby >= 2.0
+Requires Ruby >= 2.2.2
 
 ## Connecting
     require 'rdf'
