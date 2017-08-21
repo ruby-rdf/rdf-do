@@ -48,7 +48,7 @@ Requires Ruby >= 2.2.2
 
 Your repository is a fully-functional [RDF.rb][] `RDF::Repository`.  As with any
 [RDF.rb][] repository, this includes the mixins `RDF::Enumerable`, `RDF::Mutable`,
-`RDF::Durable`, and `RDF::Queryable`.  Please see <http://rdf.rubyforge.org/RDF/Repository.html> for
+`RDF::Durable`, and `RDF::Queryable`.  Please see <http://www.rubydoc.info/github/ruby-rdf/rdf/RDF/Repository> for
 more information.
 
 Example:
