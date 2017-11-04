@@ -309,7 +309,7 @@ module RDF
       def query_pattern(pattern, options = {}, &block)
         return enum_for(:query_pattern, pattern, options) unless block_given?
         @nodes = {} # reset cache. FIXME this should probably be in Node.intern
-        reader = @adapter.query(self,pattern.to_hash)
+        reader = @adapter.query(self, pattern.to_h)
         while reader.next!
           yield RDF::Statement.new(
               subject:    unserialize(reader.values[0]),
