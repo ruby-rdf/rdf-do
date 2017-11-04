@@ -26,14 +26,14 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version      = '>= 2.2.2'
   gem.requirements               = []
-  gem.add_runtime_dependency     'rdf',          '~> 2.0'
+  gem.add_runtime_dependency     'rdf',          '~> 2.2'
   gem.add_runtime_dependency     'data_objects', '~> 0.10'
   gem.add_development_dependency 'do_sqlite3' ,  '~> 0.10'
   gem.add_development_dependency 'do_postgres' , '~> 0.10'
-  gem.add_development_dependency 'rdf-spec',     '~> 2.0'
-  gem.add_development_dependency 'rspec',        '~> 3.4'
+  gem.add_development_dependency 'rdf-spec',     '~> 2.2'
+  gem.add_development_dependency 'rspec',        '~> 3.7'
   gem.add_development_dependency 'rspec-its',    '~> 1.2'
-  gem.add_development_dependency 'yard' ,        '~> 0.8'
+  gem.add_development_dependency 'yard' ,        '~> 0.9'
 
   gem.post_install_message       = nil
 end

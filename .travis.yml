@@ -6,9 +6,10 @@ script: "bundle exec rspec spec"
 env:
   - CI=true
 rvm:
-  - 2.2.5
-  - 2.3.1
-  - rbx
+  - 2.2
+  - 2.3
+  - 2.4
+  - rbx-3
 before_install: 
   - sudo apt-get update -qq
   - sudo apt-get install -qq postgresql-server-dev-9.4
@@ -16,4 +17,5 @@ cache: bundler
 sudo: true
 matrix:
   allow_failures:
-    - rvm: rbx
+    - rvm: rbx-3
+dist: trusty
