@@ -59,6 +59,7 @@ module RDF
       def supports?(feature)
         case feature.to_sym
           when :graph_name then true
+          when :literal_equality then true
           else false
         end
       end
