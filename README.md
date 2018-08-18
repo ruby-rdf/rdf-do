@@ -96,7 +96,7 @@ This repository uses [Git Flow](https://github.com/nvie/gitflow) to mange develo
 * Don't touch the `.gemspec`, `VERSION` or `AUTHORS` files. If you need to
   change them, do so on your private branch only.
 * Do feel free to add yourself to the `CREDITS` file and the corresponding
-  list in the the `README`. Alphabetical order applies.
+  list in the `README`. Alphabetical order applies.
 * Do note that in order for us to merge any non-trivial changes (as a rule
   of thumb, additions larger than about 15 lines of code), we need an
   explicit [public domain dedication][PDD] on record from you.
@@ -104,7 +104,7 @@ This repository uses [Git Flow](https://github.com/nvie/gitflow) to mange develo
 ## Support
 
 The preferred method to report issues is the issue queue at
-<http://github.com/ruby-rdf/rdf-do/issues>.  You'll get the the most attention if
+<http://github.com/ruby-rdf/rdf-do/issues>.  You'll get the most attention if
 you submit a failing test for a bug, or a pending test for a feature. 
 
 We'd also like to hear from you on the mailing list:
