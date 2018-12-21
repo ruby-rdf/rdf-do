@@ -3,7 +3,11 @@ bundler_args: --without debug
 before_script:
   - ulimit -c unlimited -S
   - "gem update --system"
-  
+before_install: 
+  - 'gem update --system --conservative || (gem i "rubygems-update:~>2.7" --no-document && update_rubygems)'
+  - 'gem update bundler --conservative'
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq postgresql-server-dev-9.4
 script: "bundle exec rspec spec"
 env:
   - CI=true
@@ -12,13 +16,12 @@ rvm:
   - 2.3
   - 2.4
   - 2.5
+  - jruby-9
   - rbx-3
-before_install: 
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq postgresql-server-dev-9.4
 cache: bundler
 sudo: true
 matrix:
   allow_failures:
+    - rvm: jruby-9
     - rvm: rbx-3
 dist: trusty
