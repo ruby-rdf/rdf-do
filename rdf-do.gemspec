@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.date               = File.mtime('VERSION').strftime('%Y-%m-%d')
 
   gem.name               = 'rdf-do'
-  gem.homepage           = 'http://ruby-rdf.github.com/rdf-do'
+  gem.homepage           = 'https://ruby-rdf.github.com/rdf-do'
   gem.license            = 'Public Domain' if gem.respond_to?(:license=)
   gem.description        = 'RDF.rb extension providing a DataObjects storage adapter.'
   gem.summary            = 'RDF.rb extension providing a DataObjects storage adapter.'

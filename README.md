@@ -3,11 +3,11 @@
 DataObjects-backed [RDF.rb][] repository, aiming for a simple use case and
 currently targeting SQLite and Postgres.
 
- * <http://github.com/ruby-rdf/rdf-do>
- * <http://lists.w3.org/Archives/Public/public-rdf-ruby>
+ * <https://github.com/ruby-rdf/rdf-do>
+ * <https://lists.w3.org/Archives/Public/public-rdf-ruby>
 
-[![Gem Version](https://badge.fury.io/rb/rdf-do.png)](http://badge.fury.io/rb/rdf-do)
-[![Build Status](https://travis-ci.org/ruby-rdf/rdf-do.png?branch=master)](http://travis-ci.org/ruby-rdf/rdf-do)
+[![Gem Version](https://badge.fury.io/rb/rdf-do.png)](https://badge.fury.io/rb/rdf-do)
+[![Build Status](https://travis-ci.org/ruby-rdf/rdf-do.png?branch=master)](https://travis-ci.org/ruby-rdf/rdf-do)
 
 This was written for a tutorial, and is thus a pretty naive implementation so far.
 RDF::DataObjects stores triples in a simple subject, predicate, object, context
@@ -48,7 +48,7 @@ Requires Ruby >= 2.2.2
 
 Your repository is a fully-functional [RDF.rb][] `RDF::Repository`.  As with any
 [RDF.rb][] repository, this includes the mixins `RDF::Enumerable`, `RDF::Mutable`,
-`RDF::Durable`, and `RDF::Queryable`.  Please see <http://www.rubydoc.info/github/ruby-rdf/rdf/RDF/Repository> for
+`RDF::Durable`, and `RDF::Queryable`.  Please see <https://www.rubydoc.info/github/ruby-rdf/rdf/RDF/Repository> for
 more information.
 
 Example:
@@ -104,18 +104,18 @@ This repository uses [Git Flow](https://github.com/nvie/gitflow) to mange develo
 ## Support
 
 The preferred method to report issues is the issue queue at
-<http://github.com/ruby-rdf/rdf-do/issues>.  You'll get the most attention if
+<https://github.com/ruby-rdf/rdf-do/issues>.  You'll get the most attention if
 you submit a failing test for a bug, or a pending test for a feature. 
 
 We'd also like to hear from you on the mailing list:
-<http://lists.w3.org/Archives/Public/public-rdf-ruby>
+<https://lists.w3.org/Archives/Public/public-rdf-ruby>
 
 ## Miscellany
 
-* Author: Ben Lavender | <blavender@gmail.com> | <http://bhuga.net> | <http://blog.datagraph.org>
-* 'License':  RDF::DataObjects is free and unemcumbered software released into the public domain.  For more information, see the included UNLICENSE file.
+* Author: Ben Lavender | <blavender@gmail.com> | <https://bhuga.net>
+* 'License':  RDF::DataObjects is free and unencumbered software released into the public domain.  For more information, see the included UNLICENSE file.
 
-[RDF.rb]:           http://rubygems.org/gems/rdf
-[YARD]:             http://yardoc.org/
-[YARD-GS]:          http://rubydoc.info/docs/yard/file/docs/GettingStarted.md
-[PDD]:              http://lists.w3.org/Archives/Public/public-rdf-ruby/2010May/0013.html
+[RDF.rb]:           https://rubygems.org/gems/rdf
+[YARD]:             https://yardoc.org/
+[YARD-GS]:          https://rubydoc.info/docs/yard/file/docs/GettingStarted.md
+[PDD]:              https://lists.w3.org/Archives/Public/public-rdf-ruby/2010May/0013.html
