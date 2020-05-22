@@ -33,7 +33,7 @@ The greatly preferred installation method is via RubyGems:
 
     $ sudo gem install rdf-do
 
-Requires Ruby >= 2.2.2
+Requires Ruby >= 2.4
 
 ## Connecting
     require 'rdf'
@@ -46,10 +46,10 @@ Requires Ruby >= 2.2.2
 
 ## Using
 
-Your repository is a fully-functional [RDF.rb][] `RDF::Repository`.  As with any
-[RDF.rb][] repository, this includes the mixins `RDF::Enumerable`, `RDF::Mutable`,
-`RDF::Durable`, and `RDF::Queryable`.  Please see <https://www.rubydoc.info/github/ruby-rdf/rdf/RDF/Repository> for
-more information.
+Your repository is a fully-functional [RDF.rb][] `RDF::Repository`.
+As with any [RDF.rb][] repository, this includes the mixins `RDF::Enumerable`, `RDF::Mutable`,
+`RDF::Durable`, and `RDF::Queryable`.
+Please see <https://www.rubydoc.info/github/ruby-rdf/rdf/RDF/Repository> for more information.
 
 Example:
 
