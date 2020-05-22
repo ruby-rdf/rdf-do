@@ -12,7 +12,7 @@ currently targeting SQLite and Postgres.
 This was written for a tutorial, and is thus a pretty naive implementation so far.
 RDF::DataObjects stores triples in a simple subject, predicate, object, context
 table.  Don't try to back a big website with it yet.  Nonetheless, it works,
-and it passes all its tests on Heroku as well.
+and it passes all its tests on [Heroku][] as well.
 
 Example:
 
@@ -26,6 +26,10 @@ repository, but only SQLite3 and Postgres are implemented for now.  The
 different databases are *just* different enough with their handling of unique
 constraints that some database-specific work is required for a new adapter, but
 it's not much.
+
+## Minimal Support
+
+Note that this library depends on the [data_objects](https://github.com/datamapper/do) gem, which has been archived. Without support from upstream gems, this project may also be deprecated.
 
 ## Installation
 
@@ -119,3 +123,4 @@ We'd also like to hear from you on the mailing list:
 [YARD]:             https://yardoc.org/
 [YARD-GS]:          https://rubydoc.info/docs/yard/file/docs/GettingStarted.md
 [PDD]:              https://lists.w3.org/Archives/Public/public-rdf-ruby/2010May/0013.html
+[Heroku]:           https://www.heroku.com
