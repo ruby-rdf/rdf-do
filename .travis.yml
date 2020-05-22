@@ -2,7 +2,6 @@ language: ruby
 bundler_args: --without debug
 before_script:
   - ulimit -c unlimited -S
-  - "gem update --system"
 before_install: 
   - sudo apt-get update -qq
   - sudo apt-get install -qq postgresql-server-dev-9.4
